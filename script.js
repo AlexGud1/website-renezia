@@ -48,6 +48,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 panelHeader.innerText = "АРХИВНЫЕ ДАННЫЕ";
                 panelSystem.classList.add('hidden');
                 panelLore.classList.remove('hidden');
+                // Сбрасываем Лор при входе (возвращаем меню)
+                resetLore();
             } else {
                 panelHeader.innerText = "ДАННЫЕ НЕДОСТУПНЫ";
                 panelSystem.classList.add('hidden');
@@ -64,33 +66,62 @@ document.addEventListener("DOMContentLoaded", () => {
     const loreContentArea = document.getElementById('lore-content-area');
     const backBtn = document.getElementById('back-to-chapters');
     const chapterTexts = document.querySelectorAll('.chapter-text');
+    
+    // Элементы правой панели для Лора
+    const loreImage = document.getElementById('lore-image');
+    const loreCaption = document.getElementById('lore-caption');
+
+    // Данные для глав (Картинка и подпись в правой панели)
+    const chapterData = {
+        "ch1": { img: "placeholder1.png", caption: "Основание Renezia, 1991 год" },
+        "ch2": { img: "placeholder2.png", caption: "Символ культа «Корень Затмения»" },
+        "ch3": { img: "placeholder3.png", caption: "Бойцы Omicron-1 на задании" }
+    };
+
+    // Функция сброса Лора (возврат в меню)
+    function resetLore() {
+        loreMenu.classList.remove('hidden');
+        loreContentArea.classList.add('hidden');
+        // Возвращаем заглушку в правой панели
+        loreImage.src = "placeholder.png";
+        loreCaption.innerText = "Название главы или персонажа";
+    }
 
     chapterBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             const chapterId = btn.getAttribute('data-chapter');
             
+            // 1. Скрываем меню, показываем контент
             loreMenu.classList.add('hidden');
             loreContentArea.classList.remove('hidden');
             
+            // 2. Прячем ВСЕ тексты глав
             chapterTexts.forEach(t => t.classList.add('hidden'));
             
+            // 3. Показываем ТОЛЬКО нужный текст
             const targetChapter = document.getElementById(chapterId);
             if (targetChapter) {
                 targetChapter.classList.remove('hidden');
             }
+
+            // 4. Меняем картинку и подпись в правой панели
+            if (chapterData[chapterId]) {
+                loreImage.src = chapterData[chapterId].img;
+                loreCaption.innerText = chapterData[chapterId].caption;
+            }
         });
     });
 
+    // Кнопка "Назад"
     if (backBtn) {
-        backBtn.addEventListener('click', () => {
-            loreMenu.classList.remove('hidden');
-            loreContentArea.classList.add('hidden');
-        });
+        backBtn.addEventListener('click', resetLore);
     }
 
     // ==========================================
     // 4. ЗАГРУЗКА ДАННЫХ ИЗ data.json
     // ==========================================
+    // ... (остальной код для fetchData и имитации активности) ...
+    // Скопируй его из прошлого сообщения, он не менялся
     const treasuryElement = document.getElementById('treasury-val');
     const raidsElement = document.getElementById('raids-val');
     const onlineElement = document.getElementById('online-val');
@@ -99,28 +130,19 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
             const response = await fetch('data.json');
             if (!response.ok) throw new Error('Ошибка загрузки');
-            
             const data = await response.json();
-            
             if (treasuryElement) treasuryElement.innerText = data.treasury;
             if (raidsElement) raidsElement.innerText = data.raids;
             if (onlineElement) onlineElement.innerText = data.online;
-            
-            console.log("Данные успешно обновлены:", data);
         } catch (error) {
             console.error("Не удалось загрузить данные:", error);
         }
     }
-
     fetchData();
-    setInterval(fetchData, 60000); // Обновляем каждую минуту
+    setInterval(fetchData, 60000); 
 
-    // ==========================================
-    // 5. ИМИТАЦИЯ АКТИВНОСТИ (Для красоты)
-    // ==========================================
     const cpuLoadElement = document.getElementById('cpu-load');
     const pingElement = document.getElementById('ping-val');
-
     setInterval(() => {
         if (cpuLoadElement) cpuLoadElement.innerText = Math.floor(Math.random() * 40) + 5 + "%";
         if (pingElement) pingElement.innerText = Math.floor(Math.random() * 45) + 15 + "ms";
