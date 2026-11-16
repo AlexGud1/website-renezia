@@ -16,7 +16,7 @@ body {
 }
 
 /* ==========================================
-   ВЕРХНЯЯ ПАНЕЛЬ (ЖЕСТКИЙ ПИКСЕЛЬНЫЙ ГЛИТЧ)
+   ВЕРХНЯЯ ПАНЕЛЬ (ГЛИТЧ)
    ========================================== */
 .top-bar {
     height: 150px;
@@ -35,7 +35,6 @@ body {
     height: 100px;
 }
 
-/* Слой 1: Омикрон (Паук) */
 .omicron {
     position: absolute;
     top: 0; left: 0;
@@ -45,7 +44,6 @@ body {
     animation: switch-omicron 8s infinite;
 }
 
-/* Слой 2: Культ */
 .cult {
     position: absolute;
     top: 0; left: 0;
@@ -55,7 +53,6 @@ body {
     animation: switch-cult 8s infinite;
 }
 
-/* Слой 3 и 4: Пиксельные разрывы (создаем из паука и культа) */
 .glitch-logo::before,
 .glitch-logo::after {
     content: "";
@@ -70,51 +67,40 @@ body {
     mix-blend-mode: screen;
 }
 
-/* Рваные куски паука (красные) */
 .glitch-logo::before {
     background-image: url('omicron.png');
     filter: drop-shadow(-4px 0 0 red);
     animation: glitch-fragments-omicron 8s infinite;
 }
 
-/* Рваные куски культа (синие) */
 .glitch-logo::after {
     background-image: url('cult.png');
     filter: drop-shadow(4px 0 0 blue);
     animation: glitch-fragments-cult 8s infinite;
 }
 
-/* ==========================================
-   АНИМАЦИИ ПЕРЕКЛЮЧЕНИЯ (РЕЗКИЕ)
-   ========================================== */
-
-/* 1. Паук стоит 4 секунды, затем резко исчезает */
 @keyframes switch-omicron {
     0%, 45% { opacity: 1; }
     46%, 95% { opacity: 0; }
     96%, 100% { opacity: 1; }
 }
 
-/* 2. Культ появляется на 46% и стоит до 95% */
 @keyframes switch-cult {
     0%, 45% { opacity: 0; }
     46%, 95% { opacity: 1; }
     96%, 100% { opacity: 0; }
 }
 
-/* 3. Рваные полосы паука (появляются в момент смены, на 45-46%) */
 @keyframes glitch-fragments-omicron {
     0%, 44% { opacity: 0; clip-path: inset(0 0 0 0); transform: translate(0); }
     45% { 
         opacity: 1; 
-        /* Вырезаем случайные куски */
         clip-path: polygon(0 10%, 100% 10%, 100% 30%, 0 30%, 0 60%, 100% 60%, 100% 80%, 0 80%);
         transform: translate(-10px, 5px) skewX(20deg);
     }
     46%, 100% { opacity: 0; }
 }
 
-/* 4. Рваные полосы культа (появляются при возврате, на 95-96%) */
 @keyframes glitch-fragments-cult {
     0%, 94% { opacity: 0; clip-path: inset(0 0 0 0); transform: translate(0); }
     95% { 
@@ -123,12 +109,6 @@ body {
         transform: translate(10px, -5px) skewX(-20deg);
     }
     96%, 100% { opacity: 0; }
-}
-
-@keyframes pixel-glitch {
-    0%, 44% { opacity: 0; clip-path: inset(50% 0 50% 0); }
-    45%, 48% { opacity: 0.8; clip-path: inset(10% 0 60% 0); transform: translateX(-5px); }
-    49%, 100% { opacity: 0; clip-path: inset(50% 0 50% 0); }
 }
 
 .main-title {
@@ -142,7 +122,7 @@ body {
 }
 
 /* ==========================================
-   ОСНОВНОЙ КОНТЕНТ
+   ОСНОВНОЙ КОНТЕНТ (3 КОЛОНКИ)
    ========================================== */
 .main-container {
     flex: 1;
@@ -152,6 +132,7 @@ body {
     height: calc(100vh - 200px);
 }
 
+/* 1. Левое меню */
 .side-menu {
     width: 250px;
     display: flex;
@@ -192,6 +173,7 @@ body {
     opacity: 1;
 }
 
+/* 2. Центральный экран */
 .content-display {
     flex: 1;
     background: rgba(0, 0, 0, 0.6);
@@ -232,11 +214,67 @@ body {
     font-weight: bold;
 }
 
+/* 3. Правая панель */
+.data-panel {
+    width: 250px;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid #4B0082;
+    padding: 20px;
+    box-shadow: inset 0 0 50px rgba(0,0,0,0.9);
+    display: flex;
+    flex-direction: column;
+}
+
+.data-panel h3 {
+    color: #fff;
+    text-align: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #4B0082;
+    padding-bottom: 10px;
+    font-size: 1rem;
+    letter-spacing: 2px;
+}
+
+.panel-content {
+    animation: fade-in 0.5s ease;
+}
+
+.panel-content.hidden {
+    display: none;
+}
+
+.status-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+    border-bottom: 1px dashed #333;
+    padding-bottom: 5px;
+}
+
+.status-ok { color: #27c93f; text-shadow: 0 0 5px #27c93f; }
+.status-warn { color: #ffbd2e; text-shadow: 0 0 5px #ffbd2e; }
+
+#lore-image {
+    width: 100%;
+    border: 1px solid #4B0082;
+    margin-bottom: 10px;
+    object-fit: cover;
+}
+
+#lore-caption {
+    font-size: 0.8rem;
+    text-align: center;
+    color: #ccc;
+    font-style: italic;
+}
+
 @keyframes fade-in {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
+/* Подвал */
 .footer-bar {
     height: 50px;
     border-top: 1px solid #4B0082;

@@ -8,7 +8,7 @@
 </head>
 <body>
 
-    <!-- ВЕРХНЯЯ ПАНЕЛЬ С ЭМБЛЕМОЙ -->
+    <!-- ВЕРХНЯЯ ПАНЕЛЬ -->
     <header class="top-bar">
         <div class="glitch-logo">
             <img src="omicron.png" class="omicron" alt="Omicron">
@@ -17,10 +17,10 @@
         <h1 class="main-title">RENEZIA</h1>
     </header>
 
-    <!-- ОСНОВНОЙ КОНТЕНТ -->
+    <!-- ОСНОВНОЙ КОНТЕНТ (3 КОЛОНКИ) -->
     <main class="main-container">
         
-        <!-- ЛЕВОЕ МЕНЮ -->
+        <!-- 1. ЛЕВОЕ МЕНЮ -->
         <nav class="side-menu">
             <button class="menu-btn active" data-target="intro">СИСТЕМА</button>
             <button class="menu-btn" data-target="lore">ЛОР И ИДЕОЛОГИЯ</button>
@@ -29,39 +29,70 @@
             <button class="menu-btn" data-target="grimoire">ГРИМУАР</button>
         </nav>
 
-        <!-- ЦЕНТРАЛЬНЫЙ ЭКРАН -->
+        <!-- 2. ЦЕНТРАЛЬНЫЙ ЭКРАН -->
         <section class="content-display" id="display-screen">
+            <!-- Система -->
             <div class="display-content" id="intro">
-                <h2>ДОБРО ПОЖАЛОВАТЬ В СИСТЕМУ</h2>
-                <p id="welcome-text">Оперативник, ожидайте загрузки профиля...</p>
-                <div class="system-log">
+                <h2>СИСТЕМА ЗАПУЩЕНА</h2>
+                <div class="system-log" id="system-log-container">
                     > Подключение к терминалу "Anaconda"...<br>
                     > Загрузка архивов корпорации "Renezia"...<br>
                     > Доступ разрешен. Уровень допуска: <span class="highlight">Омега</span>.
                 </div>
             </div>
 
-            <!-- Скрытые блоки для категорий -->
+            <!-- Лор -->
             <div class="display-content hidden" id="lore">
                 <h2>ЛОР И ИДЕОЛОГИЯ</h2>
-                <p>Информация о корпорации Renezia, культе «Корень Затмения» и их истинных целях.</p>
+                <p id="lore-text">Выберите главу в правом меню или читайте здесь...</p>
+                <!-- Сюда можно добавить кнопки глав, если нужно -->
             </div>
 
+            <!-- Иерархия -->
             <div class="display-content hidden" id="hierarchy">
                 <h2>ИЕРАРХИЯ И ОТРЯДЫ</h2>
                 <p>Структура управления: от рядового бойца до Генерального Директора.</p>
             </div>
 
+            <!-- Устав -->
             <div class="display-content hidden" id="rules">
                 <h2>УСТАВ И ПРАВИЛА</h2>
                 <p>Базовые протоколы, субординация и наказания за нарушения.</p>
             </div>
 
+            <!-- Гримуар -->
             <div class="display-content hidden" id="grimoire">
                 <h2>ГРИМУАР (ДЛЯ ПОСВЯЩЕННЫХ)</h2>
                 <p>Секретные знания культа. Доступ только для прошедших ритуал.</p>
             </div>
         </section>
+
+        <!-- 3. ПРАВАЯ ПАНЕЛЬ (ДИНАМИЧЕСКАЯ) -->
+        <aside class="data-panel">
+            <h3 id="panel-header">СТАТУС СИСТЕМЫ</h3>
+            
+            <!-- Режим для "Системы" -->
+            <div id="panel-system" class="panel-content">
+                <div class="status-item">
+                    <span>СВЯЗЬ:</span> <span class="status-ok">УСТОЙЧИВА</span>
+                </div>
+                <div class="status-item">
+                    <span>КАЗНА:</span> <span class="highlight">1 250 000</span>
+                </div>
+                <div class="status-item">
+                    <span>УГРОЗА:</span> <span class="status-warn">СРЕДНЯЯ</span>
+                </div>
+                <div class="status-item">
+                    <span>РЕЙДЫ:</span> <span>2 АКТИВНЫХ</span>
+                </div>
+            </div>
+
+            <!-- Режим для "Лора" (Картинка) -->
+            <div id="panel-lore" class="panel-content hidden">
+                <img src="placeholder.png" id="lore-image" alt="Lore Image">
+                <p id="lore-caption">Название главы или персонажа</p>
+            </div>
+        </aside>
 
     </main>
 
