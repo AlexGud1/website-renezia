@@ -24,12 +24,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const buttons = document.querySelectorAll('.menu-btn');
     const contents = document.querySelectorAll('.display-content');
     
-    // Элементы правой панели
     const panelHeader = document.getElementById('panel-header');
     const panelSystem = document.getElementById('panel-system');
     const panelLore = document.getElementById('panel-lore');
 
-    // Тексты для центрального экрана
     const categoryTexts = {
         "lore": "Информация о корпорации Renezia, культе «Корень Затмения» и их истинных целях.",
         "hierarchy": "Структура управления: от рядового бойца до Генерального Директора.",
@@ -39,18 +37,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     buttons.forEach(button => {
         button.addEventListener('click', () => {
-            // 1. Меняем активную кнопку
             buttons.forEach(b => b.classList.remove('active'));
             button.classList.add('active');
 
             const targetId = button.getAttribute('data-target');
             
-            // 2. Скрываем все центральные блоки и показываем нужный
             contents.forEach(c => c.classList.add('hidden'));
             const targetContent = document.getElementById(targetId);
             if (targetContent) targetContent.classList.remove('hidden');
 
-            // 3. Логика для правой панели
             if (targetId === 'intro') {
                 panelHeader.innerText = "СТАТУС СИСТЕМЫ";
                 panelSystem.classList.remove('hidden');
@@ -65,13 +60,51 @@ document.addEventListener("DOMContentLoaded", () => {
                 panelLore.classList.add('hidden');
             }
 
-            // 4. Запускаем печать текста (если это не "Система")
-            if (targetId !== "intro") {
+            if (targetId !== "intro" && categoryTexts[targetId]) {
                 const textElement = targetContent.querySelector('p');
-                if (textElement && categoryTexts[targetId]) {
+                if (textElement) {
                     typeWriter(textElement, categoryTexts[targetId], 30);
                 }
             }
         });
     });
+
+    // ==========================================
+    // 3. ЗАГРУЗКА ДАННЫХ ИЗ data.json
+    // ==========================================
+    const treasuryElement = document.getElementById('treasury-val');
+    const raidsElement = document.getElementById('raids-val');
+    const onlineElement = document.getElementById('online-val');
+    const pingElement = document.getElementById('ping-val');
+    const cpuLoadElement = document.getElementById('cpu-load');
+
+    async function fetchData() {
+        try {
+            const response = await fetch('data.json');
+            if (!response.ok) throw new Error('Ошибка загрузки данных');
+            
+            const data = await response.json();
+            
+            // Обновляем данные на сайте (если элементы есть)
+            if (treasuryElement) treasuryElement.innerText = data.treasury;
+            if (raidsElement) raidsElement.innerText = data.raids;
+            if (onlineElement) onlineElement.innerText = data.online;
+            
+            console.log("Данные успешно загружены:", data);
+        } catch (error) {
+            console.error("Не удалось загрузить данные:", error);
+        }
+    }
+
+    // Загружаем данные при открытии
+    fetchData();
+
+    // Обновляем каждые 60 секунд
+    setInterval(fetchData, 60000);
+
+    // Имитация загрузки ядра и пинга (для красоты)
+    setInterval(() => {
+        if (cpuLoadElement) cpuLoadElement.innerText = Math.floor(Math.random() * 40) + 5 + "%";
+        if (pingElement) pingElement.innerText = Math.floor(Math.random() * 45) + 15 + "ms";
+    }, 2000);
 });

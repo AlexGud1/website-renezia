@@ -15,9 +15,7 @@ body {
     background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)" opacity="0.05"/></svg>');
 }
 
-/* ==========================================
-   ВЕРХНЯЯ ПАНЕЛЬ (ГЛИТЧ)
-   ========================================== */
+/* ВЕРХНЯЯ ПАНЕЛЬ (ГЛИТЧ) */
 .top-bar {
     height: 150px;
     display: flex;
@@ -121,9 +119,7 @@ body {
     z-index: 10;
 }
 
-/* ==========================================
-   ОСНОВНОЙ КОНТЕНТ (3 КОЛОНКИ)
-   ========================================== */
+/* ОСНОВНОЙ КОНТЕНТ */
 .main-container {
     flex: 1;
     display: flex;
@@ -255,6 +251,36 @@ body {
 .status-ok { color: #27c93f; text-shadow: 0 0 5px #27c93f; }
 .status-warn { color: #ffbd2e; text-shadow: 0 0 5px #ffbd2e; }
 
+/* Мигающий индикатор */
+.dot-indicator {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background-color: #27c93f;
+    border-radius: 50%;
+    margin-right: 5px;
+    box-shadow: 0 0 5px #27c93f;
+    animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+/* Блок логов */
+.log-box {
+    margin-top: auto;
+    padding: 10px;
+    background: rgba(20, 10, 30, 0.8);
+    border: 1px solid #333;
+    font-size: 0.75rem;
+    color: #888;
+}
+
+.log-box p { margin: 5px 0; }
+
+/* Картинка для Лора */
 #lore-image {
     width: 100%;
     border: 1px solid #4B0082;
@@ -274,7 +300,6 @@ body {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* Подвал */
 .footer-bar {
     height: 50px;
     border-top: 1px solid #4B0082;
