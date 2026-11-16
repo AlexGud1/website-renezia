@@ -12,12 +12,11 @@ body {
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    /* Добавляем легкий шум на фон для атмосферы */
     background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)" opacity="0.05"/></svg>');
 }
 
 /* ==========================================
-   ВЕРХНЯЯ ПАНЕЛЬ С ЭМБЛЕМОЙ (ГЛИТЧ)
+   ВЕРХНЯЯ ПАНЕЛЬ (ГЛИТЧ)
    ========================================== */
 .top-bar {
     height: 150px;
@@ -32,94 +31,97 @@ body {
 
 .glitch-logo {
     position: relative;
-    width: 90px;
-    height: 90px;
+    width: 100px;
+    height: 100px;
+    /* Жесткий сдвиг всей коробки */
+    animation: glitch-box 3s infinite linear alternate-reverse; 
 }
 
-/* Базовые стили для всех картинок */
-.logo-img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-}
-
-/* 1. Основная картинка (Паук) */
+/* Базовый слой (Паук) */
 .omicron {
-    z-index: 3;
-    animation: glitch-omicron-main 4s infinite;
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: contain;
+    z-index: 5;
+    animation: glitch-pulse 3s infinite linear alternate-reverse;
 }
 
-/* 2. Картинка культа (появляется при сбое) */
+/* Слой культа (появляется снизу) */
 .cult {
-    z-index: 2;
-    animation: glitch-cult-main 4s infinite;
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: contain;
+    z-index: 4;
+    opacity: 0;
+    animation: glitch-cult-appear 3s infinite linear alternate-reverse;
 }
 
-/* 3. Красный и Синий слои для эффекта смещения (только для паука) */
+/* Красный и Синий слои для расслоения (делаем их из паука) */
 .glitch-logo::before,
 .glitch-logo::after {
     content: "";
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
     background: url('omicron.png') no-repeat center center;
     background-size: contain;
     opacity: 0.8;
+    z-index: 6;
+    mix-blend-mode: screen;
 }
 
 .glitch-logo::before {
-    left: 2px;
-    text-shadow: -2px 0 red;
-    animation: glitch-red 2s infinite linear alternate-reverse;
-    z-index: 1;
+    filter: drop-shadow(-3px 0 0 red);
+    animation: glitch-red-slice 2s infinite linear alternate-reverse;
 }
 
 .glitch-logo::after {
-    left: -2px;
-    text-shadow: 2px 0 blue;
-    animation: glitch-blue 3s infinite linear alternate-reverse;
-    z-index: 0;
+    filter: drop-shadow(3px 0 0 blue);
+    animation: glitch-blue-slice 2.5s infinite linear alternate-reverse;
 }
 
 /* --- АНИМАЦИИ --- */
 
-/* Главная анимация: паук сменяется культом */
-@keyframes glitch-omicron-main {
-    0%, 35% { opacity: 1; transform: scale(1); filter: drop-shadow(0 0 10px #a855f7); }
-    36%, 40% { opacity: 0; transform: scale(1.1) translate(2px, -2px); } /* Резкий сбой */
-    41%, 95% { opacity: 0; }
-    96%, 100% { opacity: 1; transform: scale(1); filter: drop-shadow(0 0 10px #a855f7); }
+/* Дергаем всю картинку */
+@keyframes glitch-box {
+    0%, 10%, 20%, 30%, 40%, 50%, 60%, 70%, 80%, 90%, 100% { transform: translate(0); }
+    5%, 15%, 25%, 35%, 45%, 55%, 65%, 75%, 85%, 95% { transform: translate(2px, -1px); }
 }
 
-@keyframes glitch-cult-main {
+/* Пульсация паука и появление культа */
+@keyframes glitch-pulse {
+    0%, 35% { opacity: 1; }
+    36%, 38% { opacity: 0; transform: scale(1.1); }
+    39%, 95% { opacity: 0; }
+    96%, 100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes glitch-cult-appear {
     0%, 35% { opacity: 0; }
-    36%, 40% { opacity: 1; transform: scale(0.9) translate(-2px, 2px); filter: drop-shadow(0 0 15px #ff00ff); }
-    41%, 95% { opacity: 1; transform: scale(1); filter: drop-shadow(0 0 10px #ff00ff); }
+    36%, 38% { opacity: 1; transform: scale(0.9); filter: drop-shadow(0 0 15px #ff00ff); }
+    39%, 95% { opacity: 1; transform: scale(1); filter: drop-shadow(0 0 10px #ff00ff); }
     96%, 100% { opacity: 0; }
 }
 
-/* Анимация рваного смещения цветов */
-@keyframes glitch-red {
-    0% { clip-path: inset(20% 0 30% 0); transform: translateX(-2px); }
-    20% { clip-path: inset(60% 0 10% 0); transform: translateX(2px); }
-    40% { clip-path: inset(10% 0 80% 0); transform: translateX(-1px); }
-    60% { clip-path: inset(80% 0 5% 0); transform: translateX(1px); }
-    80% { clip-path: inset(40% 0 40% 0); transform: translateX(-2px); }
-    100% { clip-path: inset(5% 0 70% 0); transform: translateX(2px); }
+/* Рваные полосы (битые пиксели) */
+@keyframes glitch-red-slice {
+    0% { clip-path: inset(10% 0 80% 0); transform: translateX(-5px); }
+    20% { clip-path: inset(80% 0 5% 0); transform: translateX(5px); }
+    40% { clip-path: inset(40% 0 40% 0); transform: translateX(-3px); }
+    60% { clip-path: inset(60% 0 20% 0); transform: translateX(3px); }
+    80% { clip-path: inset(20% 0 60% 0); transform: translateX(-2px); }
+    100% { clip-path: inset(5% 0 80% 0); transform: translateX(2px); }
 }
 
-@keyframes glitch-blue {
-    0% { clip-path: inset(70% 0 10% 0); transform: translateX(2px); }
-    20% { clip-path: inset(10% 0 60% 0); transform: translateX(-2px); }
-    40% { clip-path: inset(50% 0 20% 0); transform: translateX(1px); }
-    60% { clip-path: inset(20% 0 70% 0); transform: translateX(-1px); }
-    80% { clip-path: inset(80% 0 5% 0); transform: translateX(2px); }
-    100% { clip-path: inset(30% 0 50% 0); transform: translateX(-2px); }
+@keyframes glitch-blue-slice {
+    0% { clip-path: inset(60% 0 20% 0); transform: translateX(5px); }
+    20% { clip-path: inset(20% 0 60% 0); transform: translateX(-5px); }
+    40% { clip-path: inset(80% 0 5% 0); transform: translateX(3px); }
+    60% { clip-path: inset(10% 0 80% 0); transform: translateX(-3px); }
+    80% { clip-path: inset(40% 0 40% 0); transform: translateX(2px); }
+    100% { clip-path: inset(80% 0 10% 0); transform: translateX(-2px); }
 }
 
 .main-title {
@@ -129,7 +131,7 @@ body {
     text-shadow: 0 0 10px #a855f7;
     color: #fff;
     position: relative;
-    z-index: 4;
+    z-index: 10;
 }
 
 /* ==========================================
