@@ -7,32 +7,70 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- ФОН С ГЛИТЧЕМ -->
-    <div class="background-glitch">
-        <img src="omicron.png" class="bg-logo omicron" alt="Omicron">
-        <img src="cult.png" class="bg-logo cult" alt="Cult">
-    </div>
-    <div class="terminal">
-        <div class="terminal-header">
-            <span class="dot red"></span>
-            <span class="dot yellow"></span>
-            <span class="dot green"></span>
-            <span class="title">Terminal - Renezia</span>
+
+    <!-- ВЕРХНЯЯ ПАНЕЛЬ С ЭМБЛЕМОЙ -->
+    <header class="top-bar">
+        <div class="glitch-logo">
+            <img src="omicron.png" class="logo-img omicron" alt="Omicron">
+            <img src="cult.png" class="logo-img cult" alt="Cult">
         </div>
-        <div class="terminal-body" id="terminal-output">
-            <p class="line">> Добро пожаловать в терминал ACIT "Anaconda".</p>
-            <p class="line">> Загрузка архивов корпорации "Renezia"...</p>
-            <p class="line">> Доступ разрешен. Уровень допуска: <span class="highlight">Омега</span>.</p>
-            <br>
-            <p class="line">> Выберите раздел для просмотра:</p>
-            <p class="line link"><a href="#lore">[1] Лор и Идеология</a></p>
-            <p class="line link"><a href="#hierarchy">[2] Иерархия и Отряды</a></p>
-            <p class="line link"><a href="#rules">[3] Устав и Правила</a></p>
-            <p class="line link"><a href="#grimoire">[4] Гримуар (Для посвященных)</a></p>
-            <br>
-            <p class="line">> <span id="cursor">_</span></p>
-        </div>
-    </div>
+        <h1 class="main-title">TARR // RENEZIA</h1>
+    </header>
+
+    <!-- ОСНОВНОЙ КОНТЕНТ -->
+    <main class="main-container">
+        
+        <!-- ЛЕВОЕ МЕНЮ -->
+        <nav class="side-menu">
+            <button class="menu-btn" data-target="intro">СИСТЕМА</button>
+            <button class="menu-btn" data-target="lore">ЛОР И ИДЕОЛОГИЯ</button>
+            <button class="menu-btn" data-target="hierarchy">ИЕРАРХИЯ</button>
+            <button class="menu-btn" data-target="rules">УСТАВ</button>
+            <button class="menu-btn" data-target="grimoire">ГРИМУАР</button>
+        </nav>
+
+        <!-- ЦЕНТРАЛЬНЫЙ ЭКРАН -->
+        <section class="content-display" id="display-screen">
+            <div class="display-content" id="intro">
+                <h2>ДОБРО ПОЖАЛОВАТЬ В СИСТЕМУ</h2>
+                <p id="welcome-text">Оперативник, ожидайте загрузки профиля...</p>
+                <div class="system-log">
+                    > Подключение к терминалу "Anaconda"...<br>
+                    > Загрузка архивов корпорации "Renezia"...<br>
+                    > Доступ разрешен. Уровень допуска: <span class="highlight">Омега</span>.
+                </div>
+            </div>
+
+            <!-- Скрытые блоки для категорий -->
+            <div class="display-content hidden" id="lore">
+                <h2>ЛОР И ИДЕОЛОГИЯ</h2>
+                <p>Информация о корпорации Renezia, культе «Корень Затмения» и их истинных целях.</p>
+            </div>
+
+            <div class="display-content hidden" id="hierarchy">
+                <h2>ИЕРАРХИЯ И ОТРЯДЫ</h2>
+                <p>Структура управления: от рядового бойца до Генерального Директора.</p>
+            </div>
+
+            <div class="display-content hidden" id="rules">
+                <h2>УСТАВ И ПРАВИЛА</h2>
+                <p>Базовые протоколы, субординация и наказания за нарушения.</p>
+            </div>
+
+            <div class="display-content hidden" id="grimoire">
+                <h2>ГРИМУАР (ДЛЯ ПОСВЯЩЕННЫХ)</h2>
+                <p>Секретные знания культа. Доступ только для прошедших ритуал.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ПОДВАЛ -->
+    <footer class="footer-bar">
+        <span>Система ACIT // Anaconda v4.99</span>
+        <span>Нас не найти, но нас не сломать!</span>
+    </footer>
+
     <script src="script.js"></script>
 </body>
 </html>
