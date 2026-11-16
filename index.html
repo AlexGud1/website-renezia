@@ -42,7 +42,7 @@
                 </div>
             </div>
 
-            <!-- Лор (С системой глав) -->
+            <!-- Лор -->
             <div class="display-content hidden" id="lore">
                 <h2>ЛОР И ИДЕОЛОГИЯ</h2>
                 
@@ -53,25 +53,11 @@
                     <button class="chapter-btn" data-chapter="ch3">Глава 3: Omicron-1</button>
                 </div>
 
-                <!-- Контент глав -->
+                <!-- Контент глав (скрыт по умолчанию) -->
                 <div id="lore-content-area" class="hidden">
                     <button id="back-to-chapters">← Назад к главам</button>
-                    
-                    <div id="ch1" class="chapter-text hidden">
-                        <h3>Глава 1: Рождение Renezia</h3>
-                        <p>Здесь будет длинный текст про то, как компания была основана в Сербии, как она начинала с малого и превратилась в гиганта теневой экономики...</p>
-                        <p>И еще много текста, который будет аккуратно прокручиваться внутри этого блока. Ты можешь добавить сюда столько текста, сколько нужно — он не сломает верстку, а просто появится скроллбар.</p>
-                    </div>
-                    
-                    <div id="ch2" class="chapter-text hidden">
-                        <h3>Глава 2: Корень Затмения</h3>
-                        <p>Текст про культ, про Чадо, про то, как они нашли Renezia и заключили союз...</p>
-                    </div>
-
-                    <div id="ch3" class="chapter-text hidden">
-                        <h3>Глава 3: Omicron-1</h3>
-                        <p>Текст про создание военного крыла, про отряды и их задачи...</p>
-                    </div>
+                    <!-- СЮДА СКРИПТ БУДЕТ ВСТАВЛЯТЬ ТЕКСТ -->
+                    <div id="lore-text-container"></div>
                 </div>
             </div>
 
@@ -94,11 +80,10 @@
             </div>
         </section>
 
-        <!-- 3. ПРАВАЯ ПАНЕЛЬ (ДИНАМИЧЕСКАЯ) -->
+        <!-- 3. ПРАВАЯ ПАНЕЛЬ -->
         <aside class="data-panel">
             <h3 id="panel-header">СТАТУС СИСТЕМЫ</h3>
             
-            <!-- Режим для "Системы" -->
             <div id="panel-system" class="panel-content">
                 <div class="status-item">
                     <span>СВЯЗЬ:</span> <span class="status-ok"><span class="dot-indicator"></span> УСТОЙЧИВА</span>
@@ -118,14 +103,12 @@
                 <div class="status-item">
                     <span>ПЕРСОНАЛ:</span> <span id="online-val">14/20</span>
                 </div>
-                
                 <div class="log-box">
                     <p>[СИСТЕМА] Пакеты данных шифруются...</p>
                     <p>[СЕТЬ] Пинг до узла Renezia: <span id="ping-val">24ms</span></p>
                 </div>
             </div>
 
-            <!-- Режим для "Лора" -->
             <div id="panel-lore" class="panel-content hidden">
                 <img src="placeholder.png" id="lore-image" alt="Lore Image">
                 <p id="lore-caption">Название главы или персонажа</p>
@@ -134,7 +117,6 @@
 
     </main>
 
-    <!-- ПОДВАЛ -->
     <footer class="footer-bar">
         <span>Система ACIT // Anaconda v4.99</span>
         <span>Мы не правим миром. Мы его держим.</span>
