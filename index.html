@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACIT // Renezia Terminal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="terminal">
+        <div class="terminal-header">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+            <span class="title">Terminal - Renezia</span>
+        </div>
+        <div class="terminal-body" id="terminal-output">
+            <p class="line">> Добро пожаловать в терминал ACIT "Anaconda".</p>
+            <p class="line">> Загрузка архивов корпорации "Renezia"...</p>
+            <p class="line">> Доступ разрешен. Уровень допуска: <span class="highlight">Омега</span>.</p>
+            <br>
+            <p class="line">> Выберите раздел для просмотра:</p>
+            <p class="line link"><a href="#lore">[1] Лор и Идеология</a></p>
+            <p class="line link"><a href="#hierarchy">[2] Иерархия и Отряды</a></p>
+            <p class="line link"><a href="#rules">[3] Устав и Правила</a></p>
+            <p class="line link"><a href="#grimoire">[4] Гримуар (Для посвященных)</a></p>
+            <br>
+            <p class="line">> <span id="cursor">_</span></p>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
