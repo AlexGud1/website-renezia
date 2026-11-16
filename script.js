@@ -3,12 +3,11 @@ document.addEventListener("DOMContentLoaded", () => {
     // 1. ПРИВЕТСТВИЕ ПОЛЬЗОВАТЕЛЯ
     // ==========================================
     const welcomeText = document.getElementById('welcome-text');
-    const userName = "Оперативник"; // Потом можно заменить
+    const userName = "Оперативник"; 
     const welcomeMsg = `Добро пожаловать, ${userName}. Профиль загружен.`;
 
-    // Функция печати текста (универсальная)
     function typeWriter(element, text, speed, callback) {
-        element.innerHTML = ""; // Очищаем элемент
+        element.innerHTML = ""; 
         let i = 0;
         
         function type() {
@@ -17,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 i++;
                 setTimeout(type, speed);
             } else if (callback) {
-                callback(); // Если есть коллбэк, вызываем после завершения
+                callback();
             }
         }
         type();
@@ -34,9 +33,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const buttons = document.querySelectorAll('.menu-btn');
     const contents = document.querySelectorAll('.display-content');
 
-    // Тексты для каждой категории (чтобы при клике они печатались заново)
+    // Тексты для категорий
     const categoryTexts = {
-        "intro": "Оперативник, ожидайте загрузки профиля...\n> Подключение к терминалу \"Anaconda\"...\n> Загрузка архивов корпорации \"Renezia\"...\n> Доступ разрешен. Уровень допуска: Омега.",
         "lore": "Информация о корпорации Renezia, культе «Корень Затмения» и их истинных целях.",
         "hierarchy": "Структура управления: от рядового бойца до Генерального Директора.",
         "rules": "Базовые протоколы, субординация и наказания за нарушения.",
@@ -50,7 +48,6 @@ document.addEventListener("DOMContentLoaded", () => {
             // Добавляем активный класс текущей кнопке
             button.classList.add('active');
 
-            // Получаем ID целевого блока
             const targetId = button.getAttribute('data-target');
             
             // Скрываем все блоки
@@ -61,18 +58,10 @@ document.addEventListener("DOMContentLoaded", () => {
             if (targetContent) {
                 targetContent.classList.remove('hidden');
                 
-                // Находим элемент с текстом внутри этого блока и запускаем печать
-                const textElement = targetContent.querySelector('p');
-                if (textElement) {
-                    // Если это блок "intro", у него особый системный лог
-                    if (targetId === "intro") {
-                        const logElement = targetContent.querySelector('.system-log');
-                        textElement.innerHTML = "Оперативник, ожидайте загрузки профиля..."; 
-                        if (logElement) {
-                            typeWriter(logElement, categoryTexts[targetId], 20);
-                        }
-                    } else {
-                        // Для остальных категорий печатаем текст в <p>
+                // Находим элемент с текстом и запускаем печать
+                if (targetId !== "intro") {
+                    const textElement = targetContent.querySelector('p');
+                    if (textElement) {
                         typeWriter(textElement, categoryTexts[targetId], 30);
                     }
                 }

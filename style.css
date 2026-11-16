@@ -16,7 +16,7 @@ body {
 }
 
 /* ==========================================
-   ВЕРХНЯЯ ПАНЕЛЬ (ГЛИТЧ)
+   ВЕРХНЯЯ ПАНЕЛЬ (ГЛИТЧ-ПЕРЕКЛЮЧАТЕЛЬ)
    ========================================== */
 .top-bar {
     height: 150px;
@@ -33,32 +33,29 @@ body {
     position: relative;
     width: 100px;
     height: 100px;
-    /* Жесткий сдвиг всей коробки */
-    animation: glitch-box 3s infinite linear alternate-reverse; 
 }
 
-/* Базовый слой (Паук) */
+/* Слой 1: Омикрон (Паук) */
 .omicron {
     position: absolute;
     top: 0; left: 0;
     width: 100%; height: 100%;
     object-fit: contain;
     z-index: 5;
-    animation: glitch-pulse 3s infinite linear alternate-reverse;
+    animation: switch-omicron 8s infinite;
 }
 
-/* Слой культа (появляется снизу) */
+/* Слой 2: Культ */
 .cult {
     position: absolute;
     top: 0; left: 0;
     width: 100%; height: 100%;
     object-fit: contain;
     z-index: 4;
-    opacity: 0;
-    animation: glitch-cult-appear 3s infinite linear alternate-reverse;
+    animation: switch-cult 8s infinite;
 }
 
-/* Красный и Синий слои для расслоения (делаем их из паука) */
+/* Слой 3 и 4: Пиксельные разрывы (только для Омикрона) */
 .glitch-logo::before,
 .glitch-logo::after {
     content: "";
@@ -67,61 +64,43 @@ body {
     width: 100%; height: 100%;
     background: url('omicron.png') no-repeat center center;
     background-size: contain;
-    opacity: 0.8;
+    opacity: 0;
     z-index: 6;
     mix-blend-mode: screen;
+    animation: pixel-glitch 8s infinite;
 }
 
 .glitch-logo::before {
-    filter: drop-shadow(-3px 0 0 red);
-    animation: glitch-red-slice 2s infinite linear alternate-reverse;
+    filter: drop-shadow(-4px 0 0 red);
 }
 
 .glitch-logo::after {
-    filter: drop-shadow(3px 0 0 blue);
-    animation: glitch-blue-slice 2.5s infinite linear alternate-reverse;
+    filter: drop-shadow(4px 0 0 blue);
+    animation-delay: 0.1s;
 }
 
-/* --- АНИМАЦИИ --- */
+/* ==========================================
+   АНИМАЦИИ ПЕРЕКЛЮЧЕНИЯ
+   ========================================== */
 
-/* Дергаем всю картинку */
-@keyframes glitch-box {
-    0%, 10%, 20%, 30%, 40%, 50%, 60%, 70%, 80%, 90%, 100% { transform: translate(0); }
-    5%, 15%, 25%, 35%, 45%, 55%, 65%, 75%, 85%, 95% { transform: translate(2px, -1px); }
-}
-
-/* Пульсация паука и появление культа */
-@keyframes glitch-pulse {
-    0%, 35% { opacity: 1; }
-    36%, 38% { opacity: 0; transform: scale(1.1); }
-    39%, 95% { opacity: 0; }
+@keyframes switch-omicron {
+    0%, 45% { opacity: 1; transform: scale(1); }
+    46%, 48% { opacity: 0; transform: scale(1.1) translate(2px, -2px); }
+    49%, 95% { opacity: 0; }
     96%, 100% { opacity: 1; transform: scale(1); }
 }
 
-@keyframes glitch-cult-appear {
-    0%, 35% { opacity: 0; }
-    36%, 38% { opacity: 1; transform: scale(0.9); filter: drop-shadow(0 0 15px #ff00ff); }
-    39%, 95% { opacity: 1; transform: scale(1); filter: drop-shadow(0 0 10px #ff00ff); }
+@keyframes switch-cult {
+    0%, 45% { opacity: 0; }
+    46%, 48% { opacity: 1; transform: scale(0.9) translate(-2px, 2px); filter: drop-shadow(0 0 15px #ff00ff); }
+    49%, 95% { opacity: 1; transform: scale(1); filter: drop-shadow(0 0 10px #ff00ff); }
     96%, 100% { opacity: 0; }
 }
 
-/* Рваные полосы (битые пиксели) */
-@keyframes glitch-red-slice {
-    0% { clip-path: inset(10% 0 80% 0); transform: translateX(-5px); }
-    20% { clip-path: inset(80% 0 5% 0); transform: translateX(5px); }
-    40% { clip-path: inset(40% 0 40% 0); transform: translateX(-3px); }
-    60% { clip-path: inset(60% 0 20% 0); transform: translateX(3px); }
-    80% { clip-path: inset(20% 0 60% 0); transform: translateX(-2px); }
-    100% { clip-path: inset(5% 0 80% 0); transform: translateX(2px); }
-}
-
-@keyframes glitch-blue-slice {
-    0% { clip-path: inset(60% 0 20% 0); transform: translateX(5px); }
-    20% { clip-path: inset(20% 0 60% 0); transform: translateX(-5px); }
-    40% { clip-path: inset(80% 0 5% 0); transform: translateX(3px); }
-    60% { clip-path: inset(10% 0 80% 0); transform: translateX(-3px); }
-    80% { clip-path: inset(40% 0 40% 0); transform: translateX(2px); }
-    100% { clip-path: inset(80% 0 10% 0); transform: translateX(-2px); }
+@keyframes pixel-glitch {
+    0%, 44% { opacity: 0; clip-path: inset(50% 0 50% 0); }
+    45%, 48% { opacity: 0.8; clip-path: inset(10% 0 60% 0); transform: translateX(-5px); }
+    49%, 100% { opacity: 0; clip-path: inset(50% 0 50% 0); }
 }
 
 .main-title {
@@ -135,7 +114,7 @@ body {
 }
 
 /* ==========================================
-   ОСНОВНОЙ КОНТЕНТ (без изменений)
+   ОСНОВНОЙ КОНТЕНТ
    ========================================== */
 .main-container {
     flex: 1;
@@ -166,7 +145,7 @@ body {
     overflow: hidden;
 }
 
-.menu-btn:hover {
+.menu-btn:hover, .menu-btn.active {
     background: rgba(168, 85, 247, 0.2);
     border-color: #a855f7;
     box-shadow: 0 0 15px rgba(168, 85, 247, 0.5);
@@ -181,7 +160,7 @@ body {
     transition: 0.3s;
 }
 
-.menu-btn:hover::before {
+.menu-btn:hover::before, .menu-btn.active::before {
     opacity: 1;
 }
 
