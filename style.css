@@ -365,3 +365,19 @@ body {
     font-size: 0.8rem;
     color: #666;
 }
+
+.lore-text {
+    line-height: 1.6;
+    margin-top: 15px;
+}
+
+.lore-text strong {
+    color: #fff; /* Делаем заголовки в досье белыми, чтобы выделялись */
+    text-shadow: 0 0 5px #a855f7;
+}
+
+.lore-text hr {
+    border: 0;
+    border-bottom: 1px dashed #4B0082;
+    margin: 15px 0;
+}
