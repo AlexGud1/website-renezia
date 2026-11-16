@@ -16,7 +16,7 @@ body {
 }
 
 /* ==========================================
-   ВЕРХНЯЯ ПАНЕЛЬ (ГЛИТЧ-ПЕРЕКЛЮЧАТЕЛЬ)
+   ВЕРХНЯЯ ПАНЕЛЬ (ЖЕСТКИЙ ПИКСЕЛЬНЫЙ ГЛИТЧ)
    ========================================== */
 .top-bar {
     height: 150px;
@@ -55,45 +55,73 @@ body {
     animation: switch-cult 8s infinite;
 }
 
-/* Слой 3 и 4: Пиксельные разрывы (только для Омикрона) */
+/* Слой 3 и 4: Пиксельные разрывы (создаем из паука и культа) */
 .glitch-logo::before,
 .glitch-logo::after {
     content: "";
     position: absolute;
     top: 0; left: 0;
     width: 100%; height: 100%;
-    background: url('omicron.png') no-repeat center center;
     background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
     opacity: 0;
     z-index: 6;
     mix-blend-mode: screen;
-    animation: pixel-glitch 8s infinite;
 }
 
+/* Рваные куски паука (красные) */
 .glitch-logo::before {
+    background-image: url('omicron.png');
     filter: drop-shadow(-4px 0 0 red);
+    animation: glitch-fragments-omicron 8s infinite;
 }
 
+/* Рваные куски культа (синие) */
 .glitch-logo::after {
+    background-image: url('cult.png');
     filter: drop-shadow(4px 0 0 blue);
-    animation-delay: 0.1s;
+    animation: glitch-fragments-cult 8s infinite;
 }
 
 /* ==========================================
-   АНИМАЦИИ ПЕРЕКЛЮЧЕНИЯ
+   АНИМАЦИИ ПЕРЕКЛЮЧЕНИЯ (РЕЗКИЕ)
    ========================================== */
 
+/* 1. Паук стоит 4 секунды, затем резко исчезает */
 @keyframes switch-omicron {
-    0%, 45% { opacity: 1; transform: scale(1); }
-    46%, 48% { opacity: 0; transform: scale(1.1) translate(2px, -2px); }
-    49%, 95% { opacity: 0; }
-    96%, 100% { opacity: 1; transform: scale(1); }
+    0%, 45% { opacity: 1; }
+    46%, 95% { opacity: 0; }
+    96%, 100% { opacity: 1; }
 }
 
+/* 2. Культ появляется на 46% и стоит до 95% */
 @keyframes switch-cult {
     0%, 45% { opacity: 0; }
-    46%, 48% { opacity: 1; transform: scale(0.9) translate(-2px, 2px); filter: drop-shadow(0 0 15px #ff00ff); }
-    49%, 95% { opacity: 1; transform: scale(1); filter: drop-shadow(0 0 10px #ff00ff); }
+    46%, 95% { opacity: 1; }
+    96%, 100% { opacity: 0; }
+}
+
+/* 3. Рваные полосы паука (появляются в момент смены, на 45-46%) */
+@keyframes glitch-fragments-omicron {
+    0%, 44% { opacity: 0; clip-path: inset(0 0 0 0); transform: translate(0); }
+    45% { 
+        opacity: 1; 
+        /* Вырезаем случайные куски */
+        clip-path: polygon(0 10%, 100% 10%, 100% 30%, 0 30%, 0 60%, 100% 60%, 100% 80%, 0 80%);
+        transform: translate(-10px, 5px) skewX(20deg);
+    }
+    46%, 100% { opacity: 0; }
+}
+
+/* 4. Рваные полосы культа (появляются при возврате, на 95-96%) */
+@keyframes glitch-fragments-cult {
+    0%, 94% { opacity: 0; clip-path: inset(0 0 0 0); transform: translate(0); }
+    95% { 
+        opacity: 1; 
+        clip-path: polygon(0 20%, 100% 20%, 100% 40%, 0 40%, 0 70%, 100% 70%, 100% 90%, 0 90%);
+        transform: translate(10px, -5px) skewX(-20deg);
+    }
     96%, 100% { opacity: 0; }
 }
 
