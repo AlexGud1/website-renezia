@@ -75,35 +75,35 @@ document.addEventListener("DOMContentLoaded", () => {
     const treasuryElement = document.getElementById('treasury-val');
     const raidsElement = document.getElementById('raids-val');
     const onlineElement = document.getElementById('online-val');
-    const pingElement = document.getElementById('ping-val');
-    const cpuLoadElement = document.getElementById('cpu-load');
 
     async function fetchData() {
         try {
             const response = await fetch('data.json');
-            if (!response.ok) throw new Error('Ошибка загрузки данных');
+            if (!response.ok) throw new Error('Ошибка загрузки');
             
             const data = await response.json();
             
-            // Обновляем данные на сайте (если элементы есть)
             if (treasuryElement) treasuryElement.innerText = data.treasury;
             if (raidsElement) raidsElement.innerText = data.raids;
             if (onlineElement) onlineElement.innerText = data.online;
             
-            console.log("Данные успешно загружены:", data);
+            console.log("Данные успешно обновлены:", data);
         } catch (error) {
             console.error("Не удалось загрузить данные:", error);
         }
     }
 
-    // Загружаем данные при открытии
     fetchData();
+    setInterval(fetchData, 60000); // Обновляем каждую минуту
 
-    // Обновляем каждые 60 секунд
-    setInterval(fetchData, 60000);
+    // ==========================================
+    // 4. ИМИТАЦИЯ АКТИВНОСТИ (Для красоты)
+    // ==========================================
+    const cpuLoadElement = document.getElementById('cpu-load');
+    const pingElement = document.getElementById('ping-val');
 
-    // Имитация загрузки ядра и пинга (для красоты)
     setInterval(() => {
+        // Меняем загрузку ядра и пинг, чтобы система казалась живой
         if (cpuLoadElement) cpuLoadElement.innerText = Math.floor(Math.random() * 40) + 5 + "%";
         if (pingElement) pingElement.innerText = Math.floor(Math.random() * 45) + 15 + "ms";
     }, 2000);
