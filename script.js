@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     // ==========================================
-    // 1. УНИВЕРСАЛЬНАЯ ФУНКЦИЯ ПЕЧАТИ
+    // 1. УНИВЕРСАЛЬНАЯ ФУНКЦИЯ ПЕЧАТИ (Пока не используется для глав, но пусть будет)
     // ==========================================
     function typeWriter(element, text, speed, callback) {
         element.innerHTML = ""; 
@@ -63,12 +63,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const loreMenu = document.getElementById('lore-chapters-menu');
     const loreContentArea = document.getElementById('lore-content-area');
     const backBtn = document.getElementById('back-to-chapters');
-    const loreTextContainer = document.getElementById('lore-text-container'); // Контейнер для текста
+    const loreTextContainer = document.getElementById('lore-text-container');
 
     const loreImage = document.getElementById('lore-image');
     const loreCaption = document.getElementById('lore-caption');
 
-    // Тексты глав и картинки
+    // ВСЕ ТРИ ГЛАВЫ В ОДНОМ ОБЪЕКТЕ
     const chapters = {
         "ch1": {
             title: "Глава 1: Эхо прошлого",
@@ -110,20 +110,13 @@ document.addEventListener("DOMContentLoaded", () => {
 <hr>
 <strong>ПЕРИОД УПАДКА И ВСТРЕЧА С КУЛЬТОМ (10 ЛЕТ СПУСТЯ):</strong><br>
 После серии провальных миссий, инициированных неизвестными заказчиками, "Omicron-1" попадает в сложную ситуацию. Приток новых людей прекращается, вооружение истощается, а винодельня перестает приносить прибыль. Деятельность организации приостанавливается на неопределенный срок. В этот период внутри "Omicron-1" начинаются реформы.<br><br>
-Именно тогда происходит судьбоносная встреча с представителями культа «Корень Затмения» (Тринитарией). Культ предлагает "Omicron-1" финансовую поддержку и ресурсы в обмен на выполнение «сакральных» задач. Так появляется подставная компания **Renezia**, легальный фасад для теневых операций.<br><br>
+Именно тогда происходит судьбоносная встреча с представителями культа «Корень Затмения» (Тринитарией). Культ предлагает "Omicron-1" финансовую поддержку и ресурсы в обмен на выполнение «сакральных» задач. Так появляется подставная компания <strong>Renezia</strong>, легальный фасад для теневых операций.<br><br>
 <hr>
 <strong>ТРАНСФОРМАЦИЯ В ТЕНЕВУЮ КОРПОРАЦИЮ:</strong><br>
 В течение следующих 5 лет организация модифицирует вооружение и становится опасным противником для крупных корпораций с миллионными счетами. Бойцы "Omicron-1" начинают вести внутрисетевую войну. Благодаря экипировке, они осуществляют кражи денег со счетов банков и других предприятий. В винодельне появляется подполье, где изготовление спирта является лишь прикрытием для настоящего производства.<br><br>
 `,
             img: "placeholder2.png",
             caption: "Досье №002: Сделка с Тринитарией"
-        },
-    const chapters = {
-        "ch1": {
-            // ... (оставляем Главу 1) ...
-        },
-        "ch2": {
-            // ... (оставляем Главу 2) ...
         },
         "ch3": {
             title: "Глава 3: Наёмники",
@@ -160,7 +153,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function resetLore() {
         loreMenu.classList.remove('hidden');
         loreContentArea.classList.add('hidden');
-        loreTextContainer.innerHTML = ""; // Очищаем текст
+        loreTextContainer.innerHTML = ""; 
         loreImage.src = "placeholder.png";
         loreCaption.innerText = "Название главы или персонажа";
     }
@@ -172,20 +165,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (!chapter) return;
 
-            // 1. Скрываем меню, показываем контент
             loreMenu.classList.add('hidden');
             loreContentArea.classList.remove('hidden');
             
-            // 2. Вставляем готовый HTML (без эффекта печати)
             loreTextContainer.innerHTML = `<h3>${chapter.title}</h3><div class="lore-text">${chapter.text}</div>`;
 
-            // 3. Меняем картинку и подпись
             loreImage.src = chapter.img;
             loreCaption.innerText = chapter.caption;
         });
     });
 
-    // Кнопка "Назад"
     if (backBtn) {
         backBtn.addEventListener('click', resetLore);
     }
