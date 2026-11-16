@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", () => {
     function typeWriter(element, text, speed, callback) {
         element.innerHTML = ""; 
         let i = 0;
-        
         function type() {
             if (i < text.length) {
                 element.innerHTML += text.charAt(i);
@@ -48,8 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 panelHeader.innerText = "АРХИВНЫЕ ДАННЫЕ";
                 panelSystem.classList.add('hidden');
                 panelLore.classList.remove('hidden');
-                // Сбрасываем Лор при входе (возвращаем меню)
-                resetLore();
+                resetLore(); // Сбрасываем лор при входе
             } else {
                 panelHeader.innerText = "ДАННЫЕ НЕДОСТУПНЫ";
                 panelSystem.classList.add('hidden');
@@ -59,30 +57,44 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // ==========================================
-    // 3. ЛОГИКА ОТКРЫТИЯ ГЛАВ В РАЗДЕЛЕ "ЛОР"
+    // 3. ЛОГИКА ГЛАВ (С ПРИНУДИТЕЛЬНОЙ ЗАМЕНОЙ КОНТЕНТА)
     // ==========================================
     const chapterBtns = document.querySelectorAll('.chapter-btn');
     const loreMenu = document.getElementById('lore-chapters-menu');
     const loreContentArea = document.getElementById('lore-content-area');
     const backBtn = document.getElementById('back-to-chapters');
-    const chapterTexts = document.querySelectorAll('.chapter-text');
-    
-    // Элементы правой панели для Лора
+    const loreTextContainer = document.getElementById('lore-text-container'); // Контейнер для текста
+
     const loreImage = document.getElementById('lore-image');
     const loreCaption = document.getElementById('lore-caption');
 
-    // Данные для глав (Картинка и подпись в правой панели)
-    const chapterData = {
-        "ch1": { img: "placeholder1.png", caption: "Основание Renezia, 1991 год" },
-        "ch2": { img: "placeholder2.png", caption: "Символ культа «Корень Затмения»" },
-        "ch3": { img: "placeholder3.png", caption: "Бойцы Omicron-1 на задании" }
+    // Тексты глав и картинки
+    const chapters = {
+        "ch1": {
+            title: "Глава 1: Рождение Renezia",
+            text: "Здесь будет длинный текст про то, как компания была основана в Сербии. Мы начинали с малого, но благодаря связям и жесткой конкуренции превратились в гиганта теневой экономики. Этот текст может быть очень длинным, и он будет аккуратно прокручиваться внутри блока.",
+            img: "placeholder1.png",
+            caption: "Основание Renezia, 1991 год"
+        },
+        "ch2": {
+            title: "Глава 2: Корень Затмения",
+            text: "Текст про культ, про Чадо, про то, как они нашли Renezia и заключили союз. Это темная часть истории, о которой знают только посвященные.",
+            img: "placeholder2.png",
+            caption: "Символ культа «Корень Затмения»"
+        },
+        "ch3": {
+            title: "Глава 3: Omicron-1",
+            text: "Текст про создание военного крыла, про отряды и их задачи. Omicron-1 стал щитом и мечом корпорации, выполняя грязную работу.",
+            img: "placeholder3.png",
+            caption: "Бойцы Omicron-1 на задании"
+        }
     };
 
-    // Функция сброса Лора (возврат в меню)
+    // Функция сброса (возврат в меню)
     function resetLore() {
         loreMenu.classList.remove('hidden');
         loreContentArea.classList.add('hidden');
-        // Возвращаем заглушку в правой панели
+        loreTextContainer.innerHTML = ""; // Очищаем текст
         loreImage.src = "placeholder.png";
         loreCaption.innerText = "Название главы или персонажа";
     }
@@ -90,25 +102,25 @@ document.addEventListener("DOMContentLoaded", () => {
     chapterBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             const chapterId = btn.getAttribute('data-chapter');
-            
+            const chapter = chapters[chapterId];
+
+            if (!chapter) return;
+
             // 1. Скрываем меню, показываем контент
             loreMenu.classList.add('hidden');
             loreContentArea.classList.remove('hidden');
             
-            // 2. Прячем ВСЕ тексты глав
-            chapterTexts.forEach(t => t.classList.add('hidden'));
+            // 2. Очищаем контейнер и вставляем заголовок
+            loreTextContainer.innerHTML = `<h3>${chapter.title}</h3>`;
             
-            // 3. Показываем ТОЛЬКО нужный текст
-            const targetChapter = document.getElementById(chapterId);
-            if (targetChapter) {
-                targetChapter.classList.remove('hidden');
-            }
+            // 3. Создаем параграф для текста и запускаем печать
+            const p = document.createElement('p');
+            loreTextContainer.appendChild(p);
+            typeWriter(p, chapter.text, 20); // Печать текста
 
-            // 4. Меняем картинку и подпись в правой панели
-            if (chapterData[chapterId]) {
-                loreImage.src = chapterData[chapterId].img;
-                loreCaption.innerText = chapterData[chapterId].caption;
-            }
+            // 4. Меняем картинку и подпись
+            loreImage.src = chapter.img;
+            loreCaption.innerText = chapter.caption;
         });
     });
 
@@ -120,8 +132,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // ==========================================
     // 4. ЗАГРУЗКА ДАННЫХ ИЗ data.json
     // ==========================================
-    // ... (остальной код для fetchData и имитации активности) ...
-    // Скопируй его из прошлого сообщения, он не менялся
     const treasuryElement = document.getElementById('treasury-val');
     const raidsElement = document.getElementById('raids-val');
     const onlineElement = document.getElementById('online-val');
@@ -141,6 +151,9 @@ document.addEventListener("DOMContentLoaded", () => {
     fetchData();
     setInterval(fetchData, 60000); 
 
+    // ==========================================
+    // 5. ИМИТАЦИЯ АКТИВНОСТИ
+    // ==========================================
     const cpuLoadElement = document.getElementById('cpu-load');
     const pingElement = document.getElementById('ping-val');
     setInterval(() => {
