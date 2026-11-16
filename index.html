@@ -31,6 +31,7 @@
 
         <!-- 2. ЦЕНТРАЛЬНЫЙ ЭКРАН -->
         <section class="content-display" id="display-screen">
+            
             <!-- Система -->
             <div class="display-content" id="intro">
                 <h2>СИСТЕМА ЗАПУЩЕНА</h2>
@@ -41,11 +42,37 @@
                 </div>
             </div>
 
-            <!-- Лор -->
+            <!-- Лор (С системой глав) -->
             <div class="display-content hidden" id="lore">
                 <h2>ЛОР И ИДЕОЛОГИЯ</h2>
-                <p id="lore-text">Выберите главу в правом меню или читайте здесь...</p>
-                <!-- Сюда можно добавить кнопки глав, если нужно -->
+                
+                <!-- Меню глав -->
+                <div id="lore-chapters-menu">
+                    <button class="chapter-btn" data-chapter="ch1">Глава 1: Рождение Renezia</button>
+                    <button class="chapter-btn" data-chapter="ch2">Глава 2: Корень Затмения</button>
+                    <button class="chapter-btn" data-chapter="ch3">Глава 3: Omicron-1</button>
+                </div>
+
+                <!-- Контент глав -->
+                <div id="lore-content-area" class="hidden">
+                    <button id="back-to-chapters">← Назад к главам</button>
+                    
+                    <div id="ch1" class="chapter-text hidden">
+                        <h3>Глава 1: Рождение Renezia</h3>
+                        <p>Здесь будет длинный текст про то, как компания была основана в Сербии, как она начинала с малого и превратилась в гиганта теневой экономики...</p>
+                        <p>И еще много текста, который будет аккуратно прокручиваться внутри этого блока. Ты можешь добавить сюда столько текста, сколько нужно — он не сломает верстку, а просто появится скроллбар.</p>
+                    </div>
+                    
+                    <div id="ch2" class="chapter-text hidden">
+                        <h3>Глава 2: Корень Затмения</h3>
+                        <p>Текст про культ, про Чадо, про то, как они нашли Renezia и заключили союз...</p>
+                    </div>
+
+                    <div id="ch3" class="chapter-text hidden">
+                        <h3>Глава 3: Omicron-1</h3>
+                        <p>Текст про создание военного крыла, про отряды и их задачи...</p>
+                    </div>
+                </div>
             </div>
 
             <!-- Иерархия -->
@@ -74,20 +101,31 @@
             <!-- Режим для "Системы" -->
             <div id="panel-system" class="panel-content">
                 <div class="status-item">
-                    <span>СВЯЗЬ:</span> <span class="status-ok">УСТОЙЧИВА</span>
+                    <span>СВЯЗЬ:</span> <span class="status-ok"><span class="dot-indicator"></span> УСТОЙЧИВА</span>
                 </div>
                 <div class="status-item">
-                    <span>КАЗНА:</span> <span class="highlight">1 250 000</span>
+                    <span>ЗАГРУЗКА ЯДРА:</span> <span id="cpu-load">12%</span>
+                </div>
+                <div class="status-item">
+                    <span>КАЗНА:</span> <span class="highlight" id="treasury-val">1 250 000</span>
                 </div>
                 <div class="status-item">
                     <span>УГРОЗА:</span> <span class="status-warn">СРЕДНЯЯ</span>
                 </div>
                 <div class="status-item">
-                    <span>РЕЙДЫ:</span> <span>2 АКТИВНЫХ</span>
+                    <span>АКТИВНЫХ РЕЙДОВ:</span> <span id="raids-val">2</span>
+                </div>
+                <div class="status-item">
+                    <span>ПЕРСОНАЛ:</span> <span id="online-val">14/20</span>
+                </div>
+                
+                <div class="log-box">
+                    <p>[СИСТЕМА] Пакеты данных шифруются...</p>
+                    <p>[СЕТЬ] Пинг до узла Renezia: <span id="ping-val">24ms</span></p>
                 </div>
             </div>
 
-            <!-- Режим для "Лора" (Картинка) -->
+            <!-- Режим для "Лора" -->
             <div id="panel-lore" class="panel-content hidden">
                 <img src="placeholder.png" id="lore-image" alt="Lore Image">
                 <p id="lore-caption">Название главы или персонажа</p>

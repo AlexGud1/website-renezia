@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ==========================================
-    // 2. ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК
+    // 2. ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК (ЛЕВОЕ МЕНЮ)
     // ==========================================
     const buttons = document.querySelectorAll('.menu-btn');
     const contents = document.querySelectorAll('.display-content');
@@ -27,13 +27,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const panelHeader = document.getElementById('panel-header');
     const panelSystem = document.getElementById('panel-system');
     const panelLore = document.getElementById('panel-lore');
-
-    const categoryTexts = {
-        "lore": "Информация о корпорации Renezia, культе «Корень Затмения» и их истинных целях.",
-        "hierarchy": "Структура управления: от рядового бойца до Генерального Директора.",
-        "rules": "Базовые протоколы, субординация и наказания за нарушения.",
-        "grimoire": "Секретные знания культа. Доступ только для прошедших ритуал."
-    };
 
     buttons.forEach(button => {
         button.addEventListener('click', () => {
@@ -46,6 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const targetContent = document.getElementById(targetId);
             if (targetContent) targetContent.classList.remove('hidden');
 
+            // Логика правой панели
             if (targetId === 'intro') {
                 panelHeader.innerText = "СТАТУС СИСТЕМЫ";
                 panelSystem.classList.remove('hidden');
@@ -59,18 +53,43 @@ document.addEventListener("DOMContentLoaded", () => {
                 panelSystem.classList.add('hidden');
                 panelLore.classList.add('hidden');
             }
-
-            if (targetId !== "intro" && categoryTexts[targetId]) {
-                const textElement = targetContent.querySelector('p');
-                if (textElement) {
-                    typeWriter(textElement, categoryTexts[targetId], 30);
-                }
-            }
         });
     });
 
     // ==========================================
-    // 3. ЗАГРУЗКА ДАННЫХ ИЗ data.json
+    // 3. ЛОГИКА ОТКРЫТИЯ ГЛАВ В РАЗДЕЛЕ "ЛОР"
+    // ==========================================
+    const chapterBtns = document.querySelectorAll('.chapter-btn');
+    const loreMenu = document.getElementById('lore-chapters-menu');
+    const loreContentArea = document.getElementById('lore-content-area');
+    const backBtn = document.getElementById('back-to-chapters');
+    const chapterTexts = document.querySelectorAll('.chapter-text');
+
+    chapterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const chapterId = btn.getAttribute('data-chapter');
+            
+            loreMenu.classList.add('hidden');
+            loreContentArea.classList.remove('hidden');
+            
+            chapterTexts.forEach(t => t.classList.add('hidden'));
+            
+            const targetChapter = document.getElementById(chapterId);
+            if (targetChapter) {
+                targetChapter.classList.remove('hidden');
+            }
+        });
+    });
+
+    if (backBtn) {
+        backBtn.addEventListener('click', () => {
+            loreMenu.classList.remove('hidden');
+            loreContentArea.classList.add('hidden');
+        });
+    }
+
+    // ==========================================
+    // 4. ЗАГРУЗКА ДАННЫХ ИЗ data.json
     // ==========================================
     const treasuryElement = document.getElementById('treasury-val');
     const raidsElement = document.getElementById('raids-val');
@@ -97,13 +116,12 @@ document.addEventListener("DOMContentLoaded", () => {
     setInterval(fetchData, 60000); // Обновляем каждую минуту
 
     // ==========================================
-    // 4. ИМИТАЦИЯ АКТИВНОСТИ (Для красоты)
+    // 5. ИМИТАЦИЯ АКТИВНОСТИ (Для красоты)
     // ==========================================
     const cpuLoadElement = document.getElementById('cpu-load');
     const pingElement = document.getElementById('ping-val');
 
     setInterval(() => {
-        // Меняем загрузку ядра и пинг, чтобы система казалась живой
         if (cpuLoadElement) cpuLoadElement.innerText = Math.floor(Math.random() * 40) + 5 + "%";
         if (pingElement) pingElement.innerText = Math.floor(Math.random() * 45) + 15 + "ms";
     }, 2000);
