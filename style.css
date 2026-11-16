@@ -366,14 +366,17 @@ body {
     color: #666;
 }
 
+/* Стили для текста досье */
 .lore-text {
     line-height: 1.6;
     margin-top: 15px;
+    color: #b48cff; /* Мягкий фиолетовый для основного текста */
 }
 
 .lore-text strong {
-    color: #fff; /* Делаем заголовки в досье белыми, чтобы выделялись */
-    text-shadow: 0 0 5px #a855f7;
+    color: #d8b4fe; /* Светло-фиолетовый для заголовков (вместо белого) */
+    text-shadow: 0 0 8px rgba(168, 85, 247, 0.6); /* Легкое свечение */
+    font-weight: bold;
 }
 
 .lore-text hr {
