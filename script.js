@@ -1,5 +1,53 @@
 document.addEventListener("DOMContentLoaded", () => {
     // ==========================================
+    // 0. ЭКРАН ЗАГРУЗКИ
+    // ==========================================
+    const loader = document.getElementById('loader');
+    const progressFill = document.getElementById('progress-fill');
+    const loaderStatus = document.getElementById('loader-status');
+    
+    // Тексты для статуса загрузки
+    const statusTexts = [
+        "Инициализация ядра...",
+        "Проверка целостности данных...",
+        "Расшифровка архивов Renezia...",
+        "Подключение к узлу Anaconda...",
+        "Доступ разрешен."
+    ];
+
+    let progress = 0;
+    let statusIndex = 0;
+
+    const loadInterval = setInterval(() => {
+        // Увеличиваем прогресс на случайное число (от 1 до 5)
+        progress += Math.floor(Math.random() * 5) + 1;
+        
+        // Обновляем полоску
+        if (progressFill) progressFill.style.width = progress + "%";
+
+        // Меняем текст статуса в зависимости от прогресса
+        if (progress > 20 && statusIndex === 0) { statusIndex = 1; loaderStatus.innerText = statusTexts[1]; }
+        if (progress > 50 && statusIndex === 1) { statusIndex = 2; loaderStatus.innerText = statusTexts[2]; }
+        if (progress > 80 && statusIndex === 2) { statusIndex = 3; loaderStatus.innerText = statusTexts[3]; }
+        if (progress >= 100 && statusIndex === 3) { 
+            statusIndex = 4; 
+            loaderStatus.innerText = statusTexts[4]; 
+            loaderStatus.style.color = "#27c93f"; // Зеленый при успехе
+        }
+
+        // Если загрузка завершена
+        if (progress >= 100) {
+            clearInterval(loadInterval);
+            
+            // Ждем полсекунды и убираем прелоадер
+            setTimeout(() => {
+                loader.classList.add('hidden');
+                // Удаляем элемент из DOM через 0.5 сек (после анимации)
+                setTimeout(() => loader.remove(), 500);
+            }, 500);
+        }
+    }, 50); // Обновление каждые 50 мс
+    // ==========================================
     // 1. УНИВЕРСАЛЬНАЯ ФУНКЦИЯ ПЕЧАТИ (Пока не используется для глав, но пусть будет)
     // ==========================================
     function typeWriter(element, text, speed, callback) {

@@ -384,3 +384,60 @@ body {
     border-bottom: 1px dashed #4B0082;
     margin: 15px 0;
 }
+/* ==========================================
+   ЭКРАН ЗАГРУЗКИ (ПРЕЛОАДЕР)
+   ========================================== */
+#loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #050505; /* Черный фон */
+    z-index: 9999; /* Поверх всего */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+#loader.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.loader-content {
+    text-align: center;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.loader-text {
+    color: #a855f7;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px #a855f7;
+}
+
+.progress-bar {
+    width: 300px;
+    height: 10px;
+    border: 1px solid #4B0082;
+    margin: 20px auto;
+    position: relative;
+    background: rgba(20, 10, 30, 0.5);
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: #a855f7;
+    width: 0%; /* Начинаем с 0 */
+    box-shadow: 0 0 10px #a855f7;
+    transition: width 0.1s linear;
+}
+
+.loader-status {
+    color: #666;
+    font-size: 0.8rem;
+    margin-top: 10px;
+}
