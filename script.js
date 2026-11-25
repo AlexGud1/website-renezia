@@ -223,25 +223,32 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // 4. ЗАГРУЗКА ДАННЫХ ИЗ data.json
+    // 4. ЗАГРУЗКА ДАННЫХ ИЗ GOOGLE APPS SCRIPT
     const treasuryElement = document.getElementById('treasury-val');
     const raidsElement = document.getElementById('raids-val');
     const onlineElement = document.getElementById('online-val');
 
+    // ВСТАВЬТЕ СЮДА ВАШУ ССЫЛКУ ИЗ GOOGLE APPS SCRIPT (она начинается с https://script.google.com/macros/s/...)
+    const API_URL = 'https://script.google.com/macros/s/ВАШ_ДЛИННЫЙ_ID/exec'; 
+
     async function fetchData() {
         try {
-            const response = await fetch('data.json');
+            const response = await fetch(API_URL);
             if (!response.ok) throw new Error('Ошибка загрузки');
             const data = await response.json();
-            if (treasuryElement) treasuryElement.innerText = data.treasury;
+
+            // Форматируем число с пробелами (например, 1 250 000)
+            if (treasuryElement) treasuryElement.innerText = data.treasury.toLocaleString('ru-RU');
             if (raidsElement) raidsElement.innerText = data.raids;
             if (onlineElement) onlineElement.innerText = data.online;
+            
+            console.log("[СИСТЕМА] Данные обновлены с Google Sheets:", data);
         } catch (error) {
-            console.error("Не удалось загрузить данные:", error);
+            console.error("Не удалось загрузить данные с Google Apps Script:", error);
         }
     }
     fetchData();
-    setInterval(fetchData, 60000); 
+    setInterval(fetchData, 60000); // Обновлять раз в минуту
 
     // 5. ИМИТАЦИЯ АКТИВНОСТИ
     const cpuLoadElement = document.getElementById('cpu-load');
