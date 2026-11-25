@@ -229,7 +229,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const onlineElement = document.getElementById('online-val');
 
     // ВСТАВЬТЕ СЮДА ВАШУ ССЫЛКУ ИЗ GOOGLE APPS SCRIPT (она начинается с https://script.google.com/macros/s/...)
-    const API_URL = 'https://script.google.com/macros/s/ВАШ_ДЛИННЫЙ_ID/exec'; 
+    const API_URL = 'https://script.google.com/macros/s/AKfycbxVYcCgP4O5ouiJvTBrZs5DtAM3jDDrGef9qQM5YVRW4BiEYg8wdfRXx1a5Jb38Uxc//exec'; 
 
     async function fetchData() {
         try {
