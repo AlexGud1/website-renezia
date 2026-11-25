@@ -1,4 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
+    const secretBtn = document.getElementById('secret-tab-btn');
+    if (secretBtn) {
+        secretBtn.classList.add('hidden');
+    }
     // 0. ЭКРАН ЗАГРУЗКИ
     const loader = document.getElementById('loader');
     const progressFill = document.getElementById('progress-fill');
@@ -314,21 +318,50 @@ document.addEventListener("DOMContentLoaded", () => {
     if (terminalInput) {
         terminalInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
-                const command = terminalInput.value.trim().toLowerCase();
+                const fullCommand = terminalInput.value.trim(); // Сохраняем регистр для аргументов
+                const command = fullCommand.toLowerCase();      // Для проверки самой команды
+                const args = fullCommand.split(' ').slice(1);   // Аргументы (например, имя файла)
+
                 terminalInput.value = ''; 
-                systemLog.innerHTML += `<br>> ${command}`;
+                systemLog.innerHTML += `<br>> ${fullCommand}`;
 
                 if (command === 'help') {
-                    systemLog.innerHTML += `<br>[СИСТЕМА] Доступные команды: help, scan, decrypt, exit.`;
+                    systemLog.innerHTML += `<br>[СИСТЕМА] Доступные команды: help, scan, decrypt, whoami, ls, open [файл], sudo, clear, exit.`;
                 } else if (command === 'scan') {
                     systemLog.innerHTML += `<br>[СЕТЬ] Сканирование портов... Обнаружено 3 открытых порта.`;
                 } else if (command === 'decrypt') {
                     systemLog.innerHTML += `<br>[ОШИБКА] Недостаточно прав для расшифровки. Требуется ключ доступа.`;
+                } else if (command === 'whoami') {
+                    systemLog.innerHTML += `<br>[СИСТЕМА] Пользователь: Agent_077<br>[СИСТЕМА] Уровень допуска: <span class="highlight">Омега</span>`;
+                } else if (command === 'ls') {
+                    systemLog.innerHTML += `<br>[АРХИВ] Доступные файлы: dir1 (Генеральный Директор), dir2 (Amnesia), dir3 (Stardust).`;
+                } else if (command.startsWith('open')) {
+                    const targetFile = args[0] ? args[0].toLowerCase() : null;
+                    if (targetFile === 'dir1' || targetFile === 'dir2' || targetFile === 'dir3') {
+                        systemLog.innerHTML += `<br>[АРХИВ] Открытие файла ${targetFile}... Доступно во вкладке "АРХИВ СИНДИКАТА".`;
+                        // Автоматически переключаем вкладку на архив
+                        document.querySelector('[data-target="archive"]').click();
+                        // И открываем нужное досье
+                        setTimeout(() => {
+                            const fileBtn = document.querySelector(`[data-archive="${targetFile}"]`);
+                            if (fileBtn) fileBtn.click();
+                        }, 100);
+                    } else {
+                        systemLog.innerHTML += `<br>[ОШИБКА] Файл не найден. Используйте "ls" для списка.`;
+                    }
+                } else if (command === 'sudo') {
+                    systemLog.innerHTML += `<br>[ОШИБКА] Отказано в доступе. Попытка эскалации привилегий зарегистрирована.`;
+                } else if (command === 'clear') {
+                    systemLog.innerHTML = `> Подключение к терминалу "Anaconda"...<br>> Загрузка архивов корпорации "Renezia"...<br>> Доступ разрешен. Уровень допуска: <span class="highlight">Омега</span>.`;
+                } else if (command === 'omicron') {
+                    systemLog.innerHTML += `<br>[СИСТЕМА] Активация протокола "Омикрон"...<br>[ВНИМАНИЕ] Цветовая схема изменена.`;
+                    document.body.style.filter = "hue-rotate(120deg)"; // Сдвиг цвета в красный/зеленый
+                    setTimeout(() => { document.body.style.filter = "none"; }, 5000); // Возврат через 5 сек
                 } else if (command === 'exit') {
                     systemLog.innerHTML += `<br>[СИСТЕМА] Выход из режима отладки...`;
                     terminalInputArea.classList.add('hidden'); 
                 } else {
-                    systemLog.innerHTML += `<br>[ОШИБКА] Неизвестная команда: ${command}`;
+                    systemLog.innerHTML += `<br>[ОШИБКА] Неизвестная команда: ${fullCommand}`;
                 }
 
                 const contentDisplay = document.getElementById('display-screen');
@@ -336,7 +369,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
-
     // ==========================================
     // 8. МИНИ-ИГРА: САПЕР (ЧИСТЫЙ СЕКТОР)
     // ==========================================
@@ -446,7 +478,96 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById('secret-tab-btn').classList.remove('hidden');
         }
     }
+    // ==========================================
+    // 8.5. МИНИ-ИГРА: ВЗЛОМ ПАРОЛЯ (В ТЕРМИНАЛЕ)
+    // ==========================================
+    let isHacking = false;
+    let secretCode = [];
+    let hackAttempts = 0;
 
+    // Функция запуска игры
+    window.startHackGame = function() {
+        if (isHacking) {
+            systemLog.innerHTML += `<br>[СИСТЕМА] Взлом уже запущен. Введите 4 цифры.`;
+            return;
+        }
+        isHacking = true;
+        hackAttempts = 0;
+        // Генерируем 4 случайные цифры
+        secretCode = [];
+        for (let i = 0; i < 4; i++) {
+            secretCode.push(Math.floor(Math.random() * 10));
+        }
+        systemLog.innerHTML += `<br><br>[ВЗЛОМ] Инициализация... Генерация ключа завершена.`;
+        systemLog.innerHTML += `<br>[ВЗЛОМ] Введите 4-значный код (например: 1234). У вас 10 попыток.`;
+        terminalInput.placeholder = "Введите 4 цифры...";
+        terminalInput.focus();
+        const contentDisplay = document.getElementById('display-screen');
+        contentDisplay.scrollTop = contentDisplay.scrollHeight;
+    };
+
+    // Перехватываем ввод, если идет игра
+    if (terminalInput) {
+        terminalInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && isHacking) {
+                const guess = terminalInput.value.trim();
+                terminalInput.value = '';
+                
+                if (!/^\d{4}$/.test(guess)) {
+                    systemLog.innerHTML += `<br>> ${guess}<br>[ОШИБКА] Введите ровно 4 цифры.`;
+                    return;
+                }
+
+                hackAttempts++;
+                systemLog.innerHTML += `<br>> ${guess}`;
+
+                const guessArr = guess.split('').map(Number);
+                let exactMatches = 0; // На своем месте
+                let colorMatches = 0; // Есть в коде, но не на месте
+
+                const secretCopy = [...secretCode];
+                const guessCopy = [...guessArr];
+
+                // Считаем точные совпадения
+                for (let i = 0; i < 4; i++) {
+                    if (guessCopy[i] === secretCopy[i]) {
+                        exactMatches++;
+                        secretCopy[i] = null;
+                        guessCopy[i] = null;
+                    }
+                }
+                // Считаем совпадения по цвету
+                for (let i = 0; i < 4; i++) {
+                    if (guessCopy[i] !== null) {
+                        const index = secretCopy.indexOf(guessCopy[i]);
+                        if (index !== -1) {
+                            colorMatches++;
+                            secretCopy[index] = null;
+                        }
+                    }
+                }
+
+                if (exactMatches === 4) {
+                    systemLog.innerHTML += `<br><span style="color:#27c93f">[УСПЕХ] Код взломан! Доступ к скрытым данным получен.</span>`;
+                    // Разблокируем вкладку "Проект X"
+                    document.getElementById('secret-tab-btn').classList.remove('hidden');
+                    systemLog.innerHTML += `<br>[СИСТЕМА] Обнаружена новая вкладка в меню слева.`;
+                    isHacking = false;
+                    terminalInput.placeholder = "Введите команду (help)...";
+                } else if (hackAttempts >= 10) {
+                    systemLog.innerHTML += `<br><span style="color:#ff0000">[ПРОВАЛ] Превышено количество попыток. Система заблокирована.</span>`;
+                    systemLog.innerHTML += `<br>[СИСТЕМА] Ключ сброшен. Попробуйте позже.`;
+                    isHacking = false;
+                    terminalInput.placeholder = "Введите команду (help)...";
+                } else {
+                    systemLog.innerHTML += `<br>[ВЗЛОМ] Точных совпадений: <span style="color:#27c93f">${exactMatches}</span>. Есть в коде, но не на месте: <span style="color:#ffbd2e">${colorMatches}</span>. Осталось попыток: ${10 - hackAttempts}`;
+                }
+
+                const contentDisplay = document.getElementById('display-screen');
+                contentDisplay.scrollTop = contentDisplay.scrollHeight;
+            }
+        });
+    }
     // ==========================================
     // 9. МУЗЫКАЛЬНЫЙ ПЛЕЕР (ПЛЕЙЛИСТ)
     // ==========================================
