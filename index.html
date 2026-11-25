@@ -39,6 +39,7 @@
             <button class="menu-btn active" data-target="intro">СИСТЕМА</button>
             <button class="menu-btn" data-target="lore">ЛОР И ИДЕОЛОГИЯ</button>
             <button class="menu-btn" data-target="archive">АРХИВ СИНДИКАТА</button>
+            <button class="menu-btn hidden" id="secret-tab-btn" data-target="secret">ПРОЕКТ X</button>
         </nav>
 
         <!-- 2. ЦЕНТРАЛЬНЫЙ ЭКРАН -->
@@ -88,7 +89,7 @@
 
             <!-- Архив Синдиката -->
             <div class="display-content hidden" id="archive">
-                <h2>АРХИВ СИНДИКАТА</h2>
+                <h2>АРХИВ КОРПОРАЦИИ</h2>
                 
                 <!-- Меню файлов -->
                 <div id="archive-files-menu">
@@ -103,7 +104,14 @@
                     <div id="archive-text-container"></div>
                 </div>
             </div>
-
+            <!-- Секретная вкладка -->
+            <div class="display-content hidden" id="secret">
+                <h2 style="color: #ff5f56;">ПРОЕКТ X: ЧАДО</h2>
+                <div class="lore-text">
+                    <p><strong>УРОВЕНЬ ДОСТУПА:</strong> ЗАПРЕДЕЛЬНЫЙ</p>
+                    <p>Этот файл не должен существовать. Если вы это читаете, значит, вы взломали систему. <br><br>Истинная цель корпорации — не деньги. Это пробуждение Чадо...</p>
+                </div>
+            </div>
         <!-- 3. ПРАВАЯ ПАНЕЛЬ -->
         <aside class="data-panel">
             <h3 id="panel-header">СТАТУС СИСТЕМЫ</h3>
@@ -137,7 +145,18 @@
                 <img src="placeholder.png" id="lore-image" alt="Lore Image">
                 <p id="lore-caption">Название главы или персонажа</p>
             </div>
+             <!-- Музыкальный плеер -->
+            <div class="music-player">
+                <p>🎵 ПЛЕЙЛИСТ СИНДИКАТА</p>
+                <div class="player-controls">
+                    <button id="prev-track" class="player-btn">⏮</button>
+                    <button id="music-toggle" class="player-btn">▶</button>
+                    <button id="next-track" class="player-btn">⏭</button>
+                </div>
+                <span id="track-name" style="display:block; margin-top: 10px; color: #27c93f;">Simulated Happiness</span>
+            </div>
         </aside>
+
 
     </main>
 

@@ -89,11 +89,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 archiveContentArea.classList.add('hidden');
                 loreImage.src = "placeholder.png";
                 loreCaption.innerText = "Название главы или персонажа";
+            } else if (targetId === 'secret') {
+                panelHeader.innerText = "ЗАСЕКРЕЧЕНО";
+                panelSystem.classList.add('hidden');
+                panelLore.classList.add('hidden');
             } else {
                 panelHeader.innerText = "ДАННЫЕ НЕДОСТУПНЫ";
                 panelSystem.classList.add('hidden');
                 panelLore.classList.add('hidden');
+
             }
+
         });
     });
 
@@ -437,6 +443,84 @@ document.addEventListener("DOMContentLoaded", () => {
             minesStatus.innerText = "СЕКТОР ОЧИЩЕН: Доступ к данным открыт!";
             minesStatus.style.color = "#27c93f";
             isGameOver = true;
+            document.getElementById('secret-tab-btn').classList.remove('hidden');
         }
     }
+
+    // ==========================================
+    // 9. МУЗЫКАЛЬНЫЙ ПЛЕЕР (ПЛЕЙЛИСТ)
+    // ==========================================
+    const musicBtn = document.getElementById('music-toggle');
+    const prevBtn = document.getElementById('prev-track');
+    const nextBtn = document.getElementById('next-track');
+    const trackName = document.getElementById('track-name');
+    
+    // Список треков (загрузи эти файлы на GitHub)
+    const playlist = [
+        { src: 'music1.mp3', name: 'Working From Home' },
+        { src: 'music2.mp3', name: 'Banger' },
+        { src: 'music3.mp3', name: 'Белый Фосфор' }
+    ];
+
+    let currentTrackIndex = 0;
+    let isMusicPlaying = false;
+    
+    // Создаем аудио-объект
+    const musicTrack = new Audio(); 
+    musicTrack.volume = 0.3; // Громкость
+
+    // Функция загрузки трека
+    function loadTrack(index) {
+        musicTrack.src = playlist[index].src;
+        trackName.innerText = playlist[index].name;
+    }
+
+    // Загружаем первый трек при старте
+    if (trackName) loadTrack(currentTrackIndex);
+
+    // Логика кнопки Play/Pause
+    if (musicBtn) {
+        musicBtn.addEventListener('click', () => {
+            if (!isMusicPlaying) {
+                musicTrack.play().catch(e => console.log("Ошибка музыки:", e));
+                musicBtn.innerText = "⏸";
+                isMusicPlaying = true;
+                trackName.style.color = "#27c93f";
+            } else {
+                musicTrack.pause();
+                musicBtn.innerText = "▶";
+                isMusicPlaying = false;
+                trackName.style.color = "#ccc"; 
+            }
+        });
+    }
+
+    // Логика кнопки "Вперед"
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+            loadTrack(currentTrackIndex);
+            if (isMusicPlaying) {
+                musicTrack.play().catch(e => {});
+            }
+        });
+    }
+
+    // Логика кнопки "Назад"
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
+            loadTrack(currentTrackIndex);
+            if (isMusicPlaying) {
+                musicTrack.play().catch(e => {});
+            }
+        });
+    }
+
+    // Автоматическое переключение на следующий трек, когда заканчивается текущий
+    musicTrack.addEventListener('ended', () => {
+        currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+        loadTrack(currentTrackIndex);
+        musicTrack.play().catch(e => {});
+    });
 });
