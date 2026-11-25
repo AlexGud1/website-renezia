@@ -455,7 +455,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const nextBtn = document.getElementById('next-track');
     const trackName = document.getElementById('track-name');
     
-    // Список треков (загрузи эти файлы на GitHub)
     const playlist = [
         { src: 'music1.mp3', name: 'Working From Home' },
         { src: 'music2.mp3', name: 'Banger' },
@@ -465,20 +464,16 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentTrackIndex = 0;
     let isMusicPlaying = false;
     
-    // Создаем аудио-объект
     const musicTrack = new Audio(); 
     musicTrack.volume = 0.3; // Громкость
 
-    // Функция загрузки трека
     function loadTrack(index) {
         musicTrack.src = playlist[index].src;
         trackName.innerText = playlist[index].name;
     }
 
-    // Загружаем первый трек при старте
     if (trackName) loadTrack(currentTrackIndex);
 
-    // Логика кнопки Play/Pause
     if (musicBtn) {
         musicBtn.addEventListener('click', () => {
             if (!isMusicPlaying) {
