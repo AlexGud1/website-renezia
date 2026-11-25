@@ -259,3 +259,85 @@ document.addEventListener("DOMContentLoaded", () => {
         if (pingElement) pingElement.innerText = Math.floor(Math.random() * 45) + 15 + "ms";
     }, 2000);
 });
+    // ==========================================
+    // 6. СИСТЕМА ЗВУКА (ЭМБИЕНТ + КЛИКИ + ШУМЫ)
+    // ==========================================
+    const soundBtn = document.getElementById('sound-toggle');
+    
+    // --- АУДИО-ОБЪЕКТЫ ---
+    // Фоновый гул (основной)
+    const ambientSound = new Audio('ambient.mp3'); 
+    ambientSound.loop = true; 
+    ambientSound.volume = 0.15; 
+
+    // Звук клика (для кнопок)
+    const clickSound = new Audio('click.mp3');
+    clickSound.volume = 0.4;
+
+    // --- МАССИВ ПОСТОРОННИХ ШУМОВ ---
+    const randomSounds = [
+        new Audio('glitch.mp3'),
+        new Audio('beep.mp3'),
+        new Audio('static.mp3')
+    ];
+    
+    // Настраиваем громкость посторонних шумов (чтобы не перебивали фон)
+    randomSounds.forEach(snd => snd.volume = 0.3);
+
+    let isSoundOn = false;
+    let randomSoundTimer = null;
+
+    // --- ФУНКЦИЯ СЛУЧАЙНОГО ШУМА ---
+    function playRandomSound() {
+        if (!isSoundOn) return; // Если звук выключен, ничего не делаем
+
+        // Выбираем случайный звук из массива
+        const randomIndex = Math.floor(Math.random() * randomSounds.length);
+        const sound = randomSounds[randomIndex];
+        
+        // Сбрасываем время, чтобы звук играл с начала
+        sound.currentTime = 0;
+        sound.play().catch(e => console.log("Ошибка случайного звука:", e));
+
+        // Задаем следующую задержку (от 5 до 15 секунд)
+        const nextDelay = Math.random() * 10000 + 5000; 
+        randomSoundTimer = setTimeout(playRandomSound, nextDelay);
+    }
+
+    // --- ОБРАБОТКА КНОПКИ ЗВУКА ---
+    if (soundBtn) {
+        soundBtn.addEventListener('click', () => {
+            if (!isSoundOn) {
+                // ВКЛЮЧАЕМ
+                ambientSound.play().catch(e => console.log("Ошибка аудио:", e));
+                soundBtn.innerText = "🔊 ВЫКЛЮЧИТЬ ЗВУК";
+                soundBtn.style.color = "#27c93f"; 
+                isSoundOn = true;
+
+                // Запускаем первый случайный шум через 3 секунды
+                randomSoundTimer = setTimeout(playRandomSound, 3000);
+            } else {
+                // ВЫКЛЮЧАЕМ
+                ambientSound.pause();
+                soundBtn.innerText = "🔇 ВКЛЮЧИТЬ ЗВУК";
+                soundBtn.style.color = "#a855f7"; 
+                isSoundOn = false;
+
+                // Останавливаем таймер шумов
+                if (randomSoundTimer) {
+                    clearTimeout(randomSoundTimer);
+                    randomSoundTimer = null;
+                }
+            }
+        });
+    }
+
+    // --- ЗВУК КЛИКА НА КНОПКАХ ---
+    document.querySelectorAll('button, .chapter-btn, .menu-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            if (isSoundOn) {
+                clickSound.currentTime = 0; 
+                clickSound.play().catch(e => {}); 
+            }
+        });
+    });
