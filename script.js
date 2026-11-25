@@ -70,6 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const targetContent = document.getElementById(targetId);
             if (targetContent) targetContent.classList.remove('hidden');
 
+            // Логика правой панели
             if (targetId === 'intro') {
                 panelHeader.innerText = "СТАТУС СИСТЕМЫ";
                 panelSystem.classList.remove('hidden');
@@ -78,7 +79,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 panelHeader.innerText = "АРХИВНЫЕ ДАННЫЕ";
                 panelSystem.classList.add('hidden');
                 panelLore.classList.remove('hidden');
-                resetLore();
+                resetLore(); // Сбрасываем лор при входе
+            } else if (targetId === 'archive') {
+                panelHeader.innerText = "АРХИВНЫЕ ДАННЫЕ";
+                panelSystem.classList.add('hidden');
+                panelLore.classList.remove('hidden');
+                // Сбрасываем архив при входе
+                archiveMenu.classList.remove('hidden');
+                archiveContentArea.classList.add('hidden');
+                loreImage.src = "placeholder.png";
+                loreCaption.innerText = "Название главы или персонажа";
             } else {
                 panelHeader.innerText = "ДАННЫЕ НЕДОСТУПНЫ";
                 panelSystem.classList.add('hidden');
@@ -139,6 +149,69 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     if (backBtn) backBtn.addEventListener('click', resetLore);
+
+    // ==========================================
+    // 3.5. ЛОГИКА АРХИВА СИНДИКАТА
+    // ==========================================
+    const archiveBtns = document.querySelectorAll('[data-archive]');
+    const archiveMenu = document.getElementById('archive-files-menu');
+    const archiveContentArea = document.getElementById('archive-content-area');
+    const backToArchiveBtn = document.getElementById('back-to-archive');
+    const archiveTextContainer = document.getElementById('archive-text-container');
+    
+    // Данные для архива (Досье)
+    const archiveData = {
+        "dir1": {
+            title: "ДОСЬЕ: ГЕНЕРАЛЬНЫЙ ДИРЕКТОР",
+            text: "Имя: [Скрыто]<br>Статус: Высшее руководство<br>Уровень допуска: Омега<br>Описание: Лидер корпорации, отвечающий за стратегическое развитие и связь с Тринитарией. Держит в тайне истинные цели 'Корня Затмения'.",
+            img: "placeholder1.png", // Потом заменишь на фото
+            caption: "Фото: Недоступно"
+        },
+        "dir2": {
+            title: "ДОСЬЕ: ЛИДЕР ОТРЯДА 'AMNESIA'",
+            text: "Имя: [Скрыто]<br>Отряд: Amnesia<br>Специализация: Мелкие кражи, сбор ресурсов, разведка начального уровня.<br>Описание: Командир отряда новичков. Отвечает за обучение и первичную подготовку личного состава.",
+            img: "placeholder2.png",
+            caption: "Фото: Засекречено"
+        },
+        "dir3": {
+            title: "ДОСЬЕ: ЛИДЕР ОТРЯДА 'STARDUST'",
+            text: "Имя: [Скрыто]<br>Отряд: Stardust<br>Специализация: Скрытые финансовые рейды, похищение людей, заморозка транзакций.<br>Описание: Командир сбалансированного отряда. Подчиняется напрямую Директору Операций.",
+            img: "placeholder3.png",
+            caption: "Фото: Засекречено"
+        }
+    };
+
+    archiveBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const archiveId = btn.getAttribute('data-archive');
+            const data = archiveData[archiveId];
+            if (!data) return;
+
+            archiveMenu.classList.add('hidden');
+            archiveContentArea.classList.remove('hidden');
+            
+            archiveTextContainer.innerHTML = `<h3>${data.title}</h3><div class="lore-text">${data.text}</div>`;
+            
+            // Показываем картинку в правой панели (используем ту же панель, что и для Лора)
+            loreImage.src = data.img;
+            loreCaption.innerText = data.caption;
+            
+            // Меняем заголовок правой панели
+            panelHeader.innerText = "АРХИВНЫЕ ДАННЫЕ";
+            panelSystem.classList.add('hidden');
+            panelLore.classList.remove('hidden');
+        });
+    });
+
+    if (backToArchiveBtn) {
+        backToArchiveBtn.addEventListener('click', () => {
+            archiveMenu.classList.remove('hidden');
+            archiveContentArea.classList.add('hidden');
+            archiveTextContainer.innerHTML = "";
+            loreImage.src = "placeholder.png";
+            loreCaption.innerText = "Название главы или персонажа";
+        });
+    }
 
     // 4. ЗАГРУЗКА ДАННЫХ ИЗ data.json
     const treasuryElement = document.getElementById('treasury-val');
@@ -258,4 +331,112 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // ==========================================
+    // 8. МИНИ-ИГРА: САПЕР (ЧИСТЫЙ СЕКТОР)
+    // ==========================================
+    const startMinesBtn = document.getElementById('start-mines-btn');
+    const minesGameArea = document.getElementById('mines-game-area');
+    const minesGrid = document.getElementById('mines-grid');
+    const minesStatus = document.getElementById('mines-status');
+
+    const GRID_SIZE = 5; // Сетка 5x5
+    const MINES_COUNT = 5; // Количество мин
+
+    let minesArray = [];
+    let isGameOver = false;
+
+    if (startMinesBtn) {
+        startMinesBtn.addEventListener('click', () => {
+            startMinesBtn.classList.add('hidden');
+            minesGameArea.classList.remove('hidden');
+            initMinesGame();
+        });
+    }
+
+    function initMinesGame() {
+        minesGrid.innerHTML = '';
+        minesArray = [];
+        isGameOver = false;
+        minesStatus.innerText = "Статус: Поиск угроз...";
+        minesStatus.style.color = "#a855f7";
+
+        // Создаем пустую сетку
+        for (let i = 0; i < GRID_SIZE * GRID_SIZE; i++) {
+            const cell = document.createElement('div');
+            cell.classList.add('mine-cell');
+            cell.dataset.index = i;
+            cell.addEventListener('click', () => revealCell(i));
+            minesGrid.appendChild(cell);
+            minesArray.push({ hasMine: false, revealed: false });
+        }
+
+        // Расставляем мины случайным образом
+        let minesPlaced = 0;
+        while (minesPlaced < MINES_COUNT) {
+            const randIndex = Math.floor(Math.random() * (GRID_SIZE * GRID_SIZE));
+            if (!minesArray[randIndex].hasMine) {
+                minesArray[randIndex].hasMine = true;
+                minesPlaced++;
+            }
+        }
+    }
+
+    function revealCell(index) {
+        if (isGameOver || minesArray[index].revealed) return;
+
+        const cellElement = minesGrid.children[index];
+        minesArray[index].revealed = true;
+        cellElement.classList.add('revealed');
+
+        if (minesArray[index].hasMine) {
+            // Попали на мину
+            cellElement.classList.add('exploded');
+            cellElement.innerText = '💀';
+            minesStatus.innerText = "СБОЙ СИСТЕМЫ: Обнаружен вирус!";
+            minesStatus.style.color = "#ff0000";
+            isGameOver = true;
+            // Показываем все мины
+            minesArray.forEach((cell, i) => {
+                if (cell.hasMine && !cell.revealed) {
+                    minesGrid.children[i].classList.add('revealed');
+                    minesGrid.children[i].innerText = '☣️';
+                    minesGrid.children[i].style.color = '#ff5f56';
+                }
+            });
+        } else {
+            // Безопасная клетка - считаем мины вокруг
+            let count = 0;
+            const row = Math.floor(index / GRID_SIZE);
+            const col = index % GRID_SIZE;
+
+            for (let r = row - 1; r <= row + 1; r++) {
+                for (let c = col - 1; c <= col + 1; c++) {
+                    if (r >= 0 && r < GRID_SIZE && c >= 0 && c < GRID_SIZE) {
+                        const neighborIndex = r * GRID_SIZE + c;
+                        if (minesArray[neighborIndex].hasMine) count++;
+                    }
+                }
+            }
+
+            if (count > 0) {
+                cellElement.innerText = count;
+                cellElement.style.color = count === 1 ? '#27c93f' : count === 2 ? '#ffbd2e' : '#ff5f56';
+            }
+
+            checkWin();
+        }
+    }
+
+    function checkWin() {
+        let safeCellsRevealed = 0;
+        minesArray.forEach(cell => {
+            if (!cell.hasMine && cell.revealed) safeCellsRevealed++;
+        });
+
+        if (safeCellsRevealed === (GRID_SIZE * GRID_SIZE) - MINES_COUNT) {
+            minesStatus.innerText = "СЕКТОР ОЧИЩЕН: Доступ к данным открыт!";
+            minesStatus.style.color = "#27c93f";
+            isGameOver = true;
+        }
+    }
 });

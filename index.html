@@ -38,9 +38,7 @@
         <nav class="side-menu">
             <button class="menu-btn active" data-target="intro">СИСТЕМА</button>
             <button class="menu-btn" data-target="lore">ЛОР И ИДЕОЛОГИЯ</button>
-            <button class="menu-btn" data-target="hierarchy">ИЕРАРХИЯ</button>
-            <button class="menu-btn" data-target="rules">УСТАВ</button>
-            <button class="menu-btn" data-target="grimoire">ГРИМУАР</button>
+            <button class="menu-btn" data-target="archive">АРХИВ СИНДИКАТА</button>
         </nav>
 
         <!-- 2. ЦЕНТРАЛЬНЫЙ ЭКРАН -->
@@ -54,8 +52,22 @@
                     > Загрузка архивов корпорации "Renezia"...<br>
                     > Доступ разрешен. Уровень допуска: <span class="highlight">Омега</span>.
                 </div>
-            </div>
+                
+                <!-- Кнопка запуска игры Сапер -->
+                <button id="start-mines-btn" class="chapter-btn" style="margin-top: 20px;">▶ ЗАПУСТИТЬ ПРОТОКОЛ "ЧИСТЫЙ СЕКТОР"</button>
+                
+                <!-- Сетка для Сапера -->
+                <div id="mines-game-area" class="hidden">
+                    <p id="mines-status" style="color: #a855f7; margin-bottom: 10px;">Статус: Сканирование...</p>
+                    <div id="mines-grid"></div>
+                </div>
 
+                <!-- Строка ввода для Терминального квеста -->
+                <div id="terminal-input-area" class="hidden" style="margin-top: 20px;">
+                    <span class="prompt">></span>
+                    <input type="text" id="terminal-input" autocomplete="off" placeholder="Введите команду (help)...">
+                </div>
+            </div>
             <!-- Лор -->
             <div class="display-content hidden" id="lore">
                 <h2>ЛОР И ИДЕОЛОГИЯ</h2>
@@ -74,24 +86,23 @@
                 </div>
             </div>
 
-            <!-- Иерархия -->
-            <div class="display-content hidden" id="hierarchy">
-                <h2>ИЕРАРХИЯ И ОТРЯДЫ</h2>
-                <p>Структура управления: от рядового бойца до Генерального Директора.</p>
-            </div>
+            <!-- Архив Синдиката -->
+            <div class="display-content hidden" id="archive">
+                <h2>АРХИВ СИНДИКАТА</h2>
+                
+                <!-- Меню файлов -->
+                <div id="archive-files-menu">
+                    <button class="chapter-btn" data-archive="dir1">Досье: Генеральный Директор</button>
+                    <button class="chapter-btn" data-archive="dir2">Досье: Лидер "Amnesia"</button>
+                    <button class="chapter-btn" data-archive="dir3">Досье: Лидер "Stardust"</button>
+                </div>
 
-            <!-- Устав -->
-            <div class="display-content hidden" id="rules">
-                <h2>УСТАВ И ПРАВИЛА</h2>
-                <p>Базовые протоколы, субординация и наказания за нарушения.</p>
+                <!-- Контент досье -->
+                <div id="archive-content-area" class="hidden">
+                    <button id="back-to-archive">← Назад к файлам</button>
+                    <div id="archive-text-container"></div>
+                </div>
             </div>
-
-            <!-- Гримуар -->
-            <div class="display-content hidden" id="grimoire">
-                <h2>ГРИМУАР (ДЛЯ ПОСВЯЩЕННЫХ)</h2>
-                <p>Секретные знания культа. Доступ только для прошедших ритуал.</p>
-            </div>
-        </section>
 
         <!-- 3. ПРАВАЯ ПАНЕЛЬ -->
         <aside class="data-panel">
@@ -137,10 +148,5 @@
 
     <script src="script.js"></script>
 
-            <!-- Строка ввода для мини-игры -->
-            <div id="terminal-input-area" class="hidden">
-                <span class="prompt">></span>
-                <input type="text" id="terminal-input" autocomplete="off" placeholder="Введите команду (help)...">
-            </div>
 </body>
 </html>
