@@ -450,24 +450,42 @@ body {
 #terminal-input-area {
     display: flex;
     align-items: center;
-    margin-top: 20px;
-    background: rgba(20, 10, 30, 0.8);
-    border: 1px solid #4B0082;
-    padding: 10px;
+    margin-top: 10px; /* Небольшой отступ от текста */
+    background: transparent; /* Прозрачный фон */
+    border: none; /* Убираем рамку */
+    padding: 0;
+    width: 100%;
 }
 
-.prompt { color: #a855f7; margin-right: 10px; font-weight: bold; }
+.prompt {
+    color: #a855f7; 
+    margin-right: 10px; 
+    font-weight: bold;
+}
 
 #terminal-input {
     background: transparent;
     border: none;
     color: #a855f7;
     font-family: inherit;
-    font-size: 1rem;
+    font-size: 1rem; /* Такой же размер, как у текста лога */
     width: 100%;
     outline: none;
+    padding: 0;
 }
 
+/* Стили для самого лога, чтобы он выглядел как окно терминала */
+.system-log {
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(20, 10, 30, 0.5);
+    border-left: 3px solid #a855f7;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    font-family: 'Courier New', Courier, monospace;
+    color: #a855f7;
+}
 /* ==========================================
    САПЕР
    ========================================== */
